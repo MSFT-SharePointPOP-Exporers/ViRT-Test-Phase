@@ -394,7 +394,7 @@ namespace MvcApplication1.Models
             return dt;
         }
 
-        /*
+        /* :D
          * Calculate all the percentages for a pipeline's components
          * 
          * @param pPipeline		The pipeline for all the components
