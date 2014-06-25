@@ -799,7 +799,7 @@ namespace MvcApplication1.Models
 
 				for (int i = 0; i < farmPercents.Rows.Count; i++ )
 				{
-					//per = per + (decimal)farmPercents.Rows[i]["Percent"];
+					per = per + (decimal)farmPercents.Rows[i]["Percent"];
 				}
 
 				toAddToRetTable["NetworkID"] = allNetsinDC.Rows[x]["NetworkID"];
