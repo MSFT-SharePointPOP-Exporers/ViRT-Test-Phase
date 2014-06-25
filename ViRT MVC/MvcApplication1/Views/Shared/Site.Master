@@ -1,0 +1,152 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html>
+<html lang="en">
+  <head runat="server">
+    <meta charset="utf-8" />
+    <title>
+      <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+    </title>
+    <link href="<%: Url.Content("~/favicon.ico") %>" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <%: Styles.Render("~/Content/css") %>
+    <%: Styles.Render("~/Content/themes/base/css") %>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryui") %>
+    <%: Scripts.Render("~/bundles/modernizr") %>
+      <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
+
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $(document).ajaxSend(function () {
+                  $("#loading").fadeIn();
+              });
+
+              $(document).ajaxComplete(function () {
+                  $("#loading").fadeOut("slow");
+              });
+
+              $.ajax({
+                  contentType: "application/json",
+                  data: "",
+                  url: '<%= Url.Action("getPipelines", "Query") %>',
+                  dataType: "json",
+                  success: function (data) {
+                      for (var x = data.length - 1; x >= 0; x--) {
+                          $(".pipelines").append("<li class='pipe' id='" + data[x].Pipeline + "' onclick='setPipeline(this.id)'><a href='#'>" + data[x].Pipeline + "</a></li>");
+                      }
+                  }
+              });
+
+              $.ajax({
+                  data: "pipeline=Overview",
+                  url: '<%= Url.Action("getOverview", "Query") %>',
+                  dataType: "json",
+                  success: function (data) {
+                      for (var x = 0; x < data.length; x++) {
+                          if (data[x].Component.indexOf(sessionStorage["pipeline"]) > -1 && sessionStorage["pipeline"] != "Overview") {
+                              console.log("woo");
+                              $("tbody").append("<tr>");
+                              $("tbody").append("<td class='overview_component first'>" + data[x].Component + "</td>");
+                              $("tbody").append("<td class='overview_percent first'><a href = '../Home/PercentData'>" + data[x].Percent + "%</a></td>");
+                              $("tbody").append("</tr>");
+                          }
+                       } 
+                    }
+              });
+
+              $.ajax({
+                  data: sessionStorage["query"],
+                  url: '<%= Url.Action("getOverview", "Query") %>',
+                  dataType: "json",
+                  success: function (data) {
+                      for (var x = 0; x < data.length; x++) {
+                          $("tbody").append("<tr>");
+                          $("tbody").append("<td class='overview_component'>" + data[x].Component + "</td>");
+                          $("tbody").append("<td class='overview_percent'>" + data[x].Percent + "%</td>");
+                          $("tbody").append("</tr>");
+                      }
+                  }
+              });
+
+
+              $(".button").click(function () {
+                  sessionStorage["start"] = $(".from").val();
+                  sessionStorage["end"] = $(".to").val();
+                  updateQueryString();
+              });
+              $("#FeaturedContent_Datacenter").change(function () {
+                  sessionStorage["datacen"] = $("#FeaturedContent_Datacenter").val().toString();
+                  updateQueryString();
+              });
+              $("#FeaturedContent_Network").change(function () {
+                  sessionStorage["network"] = $("#FeaturedContent_Network").val();
+                  updateQueryString();
+              });
+              $("#FeaturedContent_Farm").change(function () {
+                  sessionStorage["farm"] = $("#FeaturedContent_Farm").val();
+                  updateQueryString();
+              });
+        });
+      </script>
+    <asp:ContentPlaceHolder ID="Head" runat="server" />
+  </head>
+  <body>
+    <nav class="top-bar" data-topbar>
+      <!-- Left Nav Section -->
+      <ul class="breadcrumbs show-for-large-up">
+        <li onclick="setHomeDefaults()"><%:Html.ActionLink("Home","Index","Home") %></li>
+      </ul>
+      <ul class="title-area">
+        <li class="name">
+        </li>
+        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="has-dropdown show-for-medium-down">
+            <a href="#">Change Pipeline</a>
+            <ul class="dropdown pipelines">
+            </ul>
+          </li>
+          <li class="has-form  show-for-small-only">
+            <div id="small_dates" class="dates show-for-medium-down medium-12 small-12">
+                <label for="from">Start Date:</label>
+                <input type="text" class="from" name="from">
+                <label for="to">Start Date:</label>
+                <input type="text" class="to" name="to">
+              <a href="#" class="button success [small large] expand">Apply Date Filters</a>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </nav>
+    <div id="pipelines" class="show-for-large-up large-1 columns">
+      <ul class="side-nav pipelines">
+      </ul>
+    </div>
+    <div id="overviewbar" class="small-12 medium-3 large-2 columns">
+        <h1>Overview Bar</h1>
+	    <table>
+		    <tbody>
+		    </tbody>
+	    </table>
+    </div>
+    <div id="rendering" class="small-12 medium-9 large-9 columns">
+      <div id="dates" class="dates large-2 medium-2 columns show-for-medium-up">
+            <label for="from">Start Date:</label>
+            <input type="text" class="from" name="from">
+            <label for="to">End Date:</label>
+            <input type="text" class="to" name="to">
+        <a href="#" class="button success [tiny small large] expand">Apply Date Filters</a>
+      </div>
+      <asp:ContentPlaceHolder ID="FeaturedContent" runat="server" />
+      <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </div>
+      <div id="loading">
+	        <h1>Loading....</h1>
+	        <img src = "http://www.projectalexa.com/static/img/large-ajax-loader.gif" alt ="">
+	    </div>
+  </body>
+</html>
