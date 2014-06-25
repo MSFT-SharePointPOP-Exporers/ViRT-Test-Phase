@@ -205,7 +205,7 @@
     						var graph1 = new AmCharts.AmGraph();
     						graph1.type = "line";
     						graph1.valueField = propertyName;
-    						graph1.balloonText = "<b><span style='font-size:14px;'>[[title]]</span></b><br />[[category]]<br /><span style='font-size:14px;'>Reliability: [[value]]</span>";
+    						graph1.balloonText = "<b><span style='font-size:14px;'>[[title]]</span></b><br />[[category]]<br /><span style='font-size:14px;'>Count: [[value]]</span>";
     						graph1.title = propertyName;
     						graph1.bullet = bullets[i];
     						graph1.bulletSize = 10;
