@@ -41,6 +41,7 @@ function setFields() {
 }
 
 function setPipeline(id) {
+    $("#loading").fadeIn();
 	sessionStorage["pipeline"] = id;
 	updateQueryString();
 }
@@ -90,6 +91,7 @@ function setNetwork(id) {
 
 
 $(document).ready(function () {
+    //$("#loading").fadeIn();
 	$(document).foundation();
 	if (window.location.search == "") {
 		updateQueryString();
@@ -98,10 +100,12 @@ $(document).ready(function () {
 		setFields();
 		setBreadcrumbs();
 	}
+	//$("#loading").fadeOut("slow");
 });
 
 //Move Elsewhere!
 $(document).ready(function () {
+    $("#loading").fadeIn();
 	$(".from").datepicker({
 		defaultDate: sessionStorage["start"],
 		changeMonth: true,
@@ -125,4 +129,6 @@ $(document).ready(function () {
 			$('.to').val(selectedDate);
 		}
 	});
+
+	//$("#loading").fadeOut("slow");
 });
