@@ -152,6 +152,7 @@ $(document).ready(function () {
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: 'yy-mm-dd',
+		maxDate:"-1D",
 		numberOfMonths: 1,
 		onClose: function (selectedDate) {
 			$(".to").datepicker("option", "minDate", selectedDate);

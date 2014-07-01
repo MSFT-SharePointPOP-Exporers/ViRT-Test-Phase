@@ -86,27 +86,25 @@
         <a href="PercentData" id="PercentDataLink">View Component Reliability</a>
     </div>
 
-    <div id="selectors" class="small-12 small-centered medium-12 medium-centered large-centered large-12">
+    <div id="selectors" class="small-12 medium-12 large-12">
         <form id="form1" runat="server">
             <div id="SelectDatacenter">
                 <p>Datacenter</p>
-       
+
                 <asp:DropDownList ID="Datacenter" runat="server">
                 </asp:DropDownList>
             </div>
             <div id="SelectNetwork">
                 <p>Network ID</p>
-       
-                <asp:DropDownList ID="Network" runat="server" DataSourceID="SqlDataSource2" DataTextField="NetworkId" DataValueField="NetworkId">
+
+                <asp:DropDownList ID="Network" runat="server">
                 </asp:DropDownList>
-                <asp:SqlDataSource runat="server" ID="SqlDataSource2" ConnectionString="Data Source=FIDEL3127;Initial Catalog=VisDataTestCOSMOS;User ID=dataUser;Password=userData!" ProviderName="System.Data.SqlClient" SelectCommand="SELECT DISTINCT [NetworkId] FROM [DataCenterNetworkId]"></asp:SqlDataSource>
             </div>
             <div id="SelectFarm">
                 <p>Farm ID</p>
-       
-                <asp:DropDownList ID="Farm" runat="server" DataSourceID="SqlDataSource1" DataTextField="FarmId" DataValueField="FarmId">
+
+                <asp:DropDownList ID="Farm" runat="server">
                 </asp:DropDownList>
-                <asp:SqlDataSource runat="server" ID="SqlDataSource1" ConnectionString="Data Source=FIDEL3127;Initial Catalog=VisDataTestCOSMOS;User ID=dataUser;Password=userData!" ProviderName="System.Data.SqlClient" SelectCommand="SELECT DISTINCT [FarmID] FROM [ProdDollar_TagAggregation]"></asp:SqlDataSource>
             </div>
             <div id="Entry">
             </div>
