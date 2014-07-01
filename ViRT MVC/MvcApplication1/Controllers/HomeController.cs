@@ -63,9 +63,7 @@ namespace MvcApplication1.Controllers
 
         public ActionResult PercentData()
         {
-            Reliability paramsPercent = new Reliability();
-
-            paramsPercent.ChangeDate(Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
+            Reliability paramsPercent = new Reliability(Request.QueryString["datacen"], Convert.ToInt32(Request.QueryString["network"]), Convert.ToInt32(Request.QueryString["farm"]), Request.QueryString["pipeline"], Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
             DataTable percentTable = paramsPercent.PipelineCalculate(Request.QueryString["pipeline"]);
 
@@ -78,7 +76,7 @@ namespace MvcApplication1.Controllers
 
         public ActionResult RawData()
         {
-            Reliability rawData = new Reliability();
+            Reliability rawData = new Reliability(Request.QueryString["datacen"], Convert.ToInt32(Request.QueryString["network"]), Convert.ToInt32(Request.QueryString["farm"]), Request.QueryString["pipeline"], Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
             rawData.ChangeDate(Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
             String[] components = rawData.getComponents(Request.QueryString["pipeline"]);
