@@ -17,11 +17,12 @@
 
       <script type="text/javascript">
           $(document).ready(function () {
+              
               $(document).ajaxSend(function () {
-                  $("#loading").fadeIn();
+                  //$("#loading").fadeIn();
               });
 
-              $(document).ajaxComplete(function () {
+              $(window).load(function () {
                   $("#loading").fadeOut("slow");
               });
 
@@ -70,6 +71,7 @@
 
 
               $(".button").click(function () {
+                  $("#loading").fadeIn();
                   sessionStorage["start"] = $(".from").val();
                   sessionStorage["end"] = $(".to").val();
                   updateQueryString();
@@ -86,7 +88,8 @@
                   sessionStorage["farm"] = $("#FeaturedContent_Farm").val();
                   updateQueryString();
               });
-        });
+              
+          });
       </script>
     <asp:ContentPlaceHolder ID="Head" runat="server" />
   </head>
