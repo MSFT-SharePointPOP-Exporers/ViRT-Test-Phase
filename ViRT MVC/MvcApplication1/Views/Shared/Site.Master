@@ -31,6 +31,7 @@
                   url: '<%= Url.Action("getPipelines", "Query") %>',
                   dataType: "json",
                   success: function (data) {
+                      console.log("1");
                       for (var x = data.length - 1; x >= 0; x--) {
                           $(".pipelines").append("<li class='pipe' id='" + data[x].Pipeline + "' onclick='setPipeline(this.id)'><a href='#'>" + data[x].Pipeline + "</a></li>");
                       }
@@ -42,9 +43,9 @@
                   url: '<%= Url.Action("getOverview", "Query") %>',
                   dataType: "json",
                   success: function (data) {
+                      console.log(data);
                       for (var x = 0; x < data.length; x++) {
                           if (data[x].Component.indexOf(sessionStorage["pipeline"]) > -1 && sessionStorage["pipeline"] != "Overview") {
-                              console.log("woo");
                               $("tbody").append("<tr>");
                               $("tbody").append("<td class='overview_component first'>" + data[x].Component + "</td>");
                               $("tbody").append("<td class='overview_percent first'><a href = '../Home/PercentData'>" + data[x].Percent + "%</a></td>");
@@ -55,10 +56,11 @@
               });
 
               $.ajax({
-                  data: sessionStorage["query"],
+                  data: "pipeline=" + sessionStorage["pipeline"],
                   url: '<%= Url.Action("getOverview", "Query") %>',
                   dataType: "json",
                   success: function (data) {
+                      console.log(data);
                       for (var x = 0; x < data.length; x++) {
                           $("tbody").append("<tr>");
                           $("tbody").append("<td class='overview_component'>" + data[x].Component + "</td>");
@@ -94,7 +96,6 @@
     <nav class="top-bar" data-topbar>
       <!-- Left Nav Section -->
       <ul class="breadcrumbs show-for-large-up">
-        <li onclick="setHomeDefaults()"><%:Html.ActionLink("Home","Index","Home") %></li>
       </ul>
       <ul class="title-area">
         <li class="name">

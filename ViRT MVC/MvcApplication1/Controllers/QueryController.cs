@@ -52,7 +52,6 @@ namespace MvcApplication1.Controllers
             
             test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
-
 			test.ChangeDataCenter(Request.QueryString["datacen"]);
 
 			DataTable table = test.CalculateDataCenterHeatMap();
