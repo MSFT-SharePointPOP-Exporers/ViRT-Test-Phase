@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace MvcApplication1.Models
 {
@@ -15,7 +16,7 @@ namespace MvcApplication1.Models
 		private String pipeline;
 		private DateTime start;
 		private DateTime end;
-		private SqlConnection dbConnect = new SqlConnection("Data Source=FIDEL3127;Initial Catalog=VisDataTestCOSMOS;Integrated Security=True;");
+		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
 		Random random = new Random();
 
 		/*
@@ -284,7 +285,7 @@ namespace MvcApplication1.Models
 				retTable.Rows.Add(toAdd);
 
 				toAdd = retTable.NewRow();
-
+				total = 0;
 			}
 
 			//Close connection and return the table
@@ -465,16 +466,312 @@ namespace MvcApplication1.Models
 			return dt;
 		}
 
+
 		/*
-		 * Changes the start and end date
+		 * Retrieves the names of the components for a pipeline
 		 * 
-		 * @param pStart		New start date
-		 * @param pEnd			New end date
+		 * @param pPipeline		The pipeline whose components will be returned
+		 * @return		Array of componets for the pipeline
 		 */
+		public String[] getComponents(String pPipeline)
+		{
+			dbConnect.Open();
+			String query = "SELECT Component FROM PipelineComponent WHERE Pipeline = '" + pPipeline + "'";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable componentsForPipeline = new DataTable();
+			componentsForPipeline.Load(queryCommandReader);
+
+
+			String[] compsArray = new String[componentsForPipeline.Rows.Count];
+
+			for (int i = 0; i < componentsForPipeline.Rows.Count; i++)
+			{
+				compsArray[i] = (String)componentsForPipeline.Rows[i]["Component"];
+			}
+
+			dbConnect.Close();
+			return compsArray;
+		}
+
+		/*
+		 * Retrieves all the pipeline names 
+		 * 
+		 * @return a String array of all the pipelines
+		 */
+		public DataTable GetAllPipelines()
+		{
+			dbConnect.Open();
+			String query = "SELECT * FROM Pipeline";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable pipelines = new DataTable();
+			pipelines.Load(queryCommandReader);
+
+			dbConnect.Close();
+			return pipelines;
+		}
+
+		/*
+		 * 
+		 * 
+		 */
+		public String[] GetAllDataCentersArray()
+		{
+			dbConnect.Open();
+			String query = "SELECT DataCenter FROM DataCenter";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable dataCenters = new DataTable();
+			dataCenters.Load(queryCommandReader);
+
+
+			String[] dcArray = new String[dataCenters.Rows.Count];
+
+			for (int i = 0; i < dataCenters.Rows.Count; i++)
+			{
+				dcArray[i] = (String)dataCenters.Rows[i]["DataCenter"];
+			}
+
+			dbConnect.Close();
+			return dcArray;
+		}
+
+		/*
+		 * 
+		 * 
+		 * 
+		 */
+		public int[] GetAllFarmsInNetworkArray()
+		{
+			dbConnect.Open();
+			String query = "SELECT FarmId FROM NetworkIdFarmId WHERE NetworkId = " + networkID;
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable farmIDTable = new DataTable();
+			farmIDTable.Load(queryCommandReader);
+
+			int[] farmArray = new int[farmIDTable.Rows.Count];
+
+			for (int i = 0; i < farmIDTable.Rows.Count; i++)
+			{
+				farmArray[i] = (int)farmIDTable.Rows[i]["FarmId"];
+			}
+
+			dbConnect.Close();
+
+			return farmArray;
+		}
+
+		/*
+		 * Retrieves the datacenter with the lat and long
+		 * 
+		 * @return		DataTable with latitude and longitude
+		 */
+		public DataTable GetDataCenterLatLong()
+		{
+			dbConnect.Open();
+			String query = "SELECT DataCenter, latitude, longitude FROM DataCenter";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable dclatlong = new DataTable();
+			dclatlong.Load(queryCommandReader);
+			dbConnect.Close();
+			return dclatlong;
+		}
+
+		/*
+		 * 
+		 * 
+		 */
+		public decimal CalculatePipeOverview()
+		{
+			DataTable pipePercentTable = OverviewCalculate(pipeline);
+			decimal total = 0;
+
+			for (int i = 0; i < pipePercentTable.Rows.Count; i++)
+			{
+				total = total + (decimal)pipePercentTable.Rows[i]["Percent"];
+			}
+
+			if (pipePercentTable.Rows.Count == 0) return 0;
+
+			return Math.Round(total / pipePercentTable.Rows.Count, 4);
+		}
+
+		/*
+		 * Retrieves all the NetworkID's for a specific dataCenter
+		 * 
+		 * @return a DataTable of the NetworkID's
+		 */
+		public DataTable getNetworks(String dataCenter)
+		{
+			dbConnect.Open();
+			String query = "SELECT DISTINCT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable networks = new DataTable();
+			networks.Load(queryCommandReader);
+			dbConnect.Close();
+			return networks;
+		}
+
+		/*
+		* Retrieves all the FarmID for the NetworkID
+		* 
+		* @return a DataTable of the FarmID's
+		*/
+		public DataTable getFarms(int NetworkID)
+		{
+			//dbConnect.Open();
+			//String query = "SELECT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
+			//SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			//SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			//DataTable networks = new DataTable();
+			//networks.Load(queryCommandReader);
+			//dbConnect.Close();
+			DataTable farms = new DataTable();
+			DataColumn id = new DataColumn("FarmID", typeof(int));
+			DataColumn percent = new DataColumn("Percentage", typeof(double));
+			farms.Columns.Add(id);
+			farms.Columns.Add(percent);
+			for (int i = 0; i < random.Next(1, 30); i++)
+			{
+				DataRow newRow = farms.NewRow();
+				newRow["FarmID"] = random.Next(1000, 10000);
+				newRow["Percentage"] = Convert.ToDouble(String.Format("{0:0.0000}", random.NextDouble() * 100));
+				farms.Rows.Add(newRow);
+			}
+			return farms;
+		}
+
+		/*
+		 * So this is a whole big function again. Womp...
+		 * More complicated than anticipated
+		 * 
+		 */
+		public DataTable CalculateDataCenterHeatMap()
+		{
+			//Create a DataTable which has NetworkIDs, Percents (average of farms), and a DataTable of the Farms
+			DataTable retTable = new DataTable();
+			retTable.Columns.Add("NetworkID", typeof(int));
+			retTable.Columns.Add("Percent", typeof(decimal)); //potenial error
+			retTable.Columns.Add("Farms", typeof(DataTable));
+
+			//DataRow to add to the return table
+			DataRow toAddToRetTable = retTable.NewRow();
+
+			//All the NetworkIds in the current DataCenter
+			DataTable allNetsinDC = getNetworks(dataCenter);
+
+			//Iterate through all the Networks in the current DataCenter
+			for (int rowNum = 0; rowNum < allNetsinDC.Rows.Count; rowNum++)
+			{
+				//farmPercents holds the list of farms for a network and the percents
+				DataTable farmPercents = new DataTable();
+				farmPercents.Columns.Add("Farms", typeof(int));
+				farmPercents.Columns.Add("Percent", typeof(decimal));
+
+				ChangeNetworkID((int)allNetsinDC.Rows[rowNum]["NetworkID"]);
+
+				//Retrieve all the farms in the network
+				int[] farms = GetAllFarmsInNetworkArray();
+
+				//iterate through the farms
+				for (int i = 0; i < farms.Length; i++)
+				{
+					DataRow toAdd = farmPercents.NewRow();
+
+					ChangeFarmID(farms[i]);
+
+					//temp is the table which will be added to the retTable
+					DataTable temp = OverviewCalculate(pipeline);
+
+					decimal per = 0;
+					toAdd["Farms"] = farms[i];
+					for (int k = 0; k < temp.Rows.Count; k++)
+					{
+						per = per + (decimal)temp.Rows[k]["Percent"];
+					}
+					toAdd["Percent"] = Math.Round(per / temp.Rows.Count, 4);
+
+					farmPercents.Rows.Add(toAdd);
+				}
+
+				//addstuff here
+				decimal perRet = 0;
+
+				for (int i = 0; i < farmPercents.Rows.Count; i++)
+				{
+					perRet = perRet + (decimal)farmPercents.Rows[i]["Percent"];
+				}
+
+				toAddToRetTable["NetworkID"] = allNetsinDC.Rows[rowNum]["NetworkID"];
+
+				if (perRet == 0) toAddToRetTable["Percent"] = 0;
+				else toAddToRetTable["Percent"] = Math.Round(perRet / farmPercents.Rows.Count, 4);
+
+				//farmPercents.Rows.Add(toAdd);
+
+				if (farmPercents.Rows.Count != 0)
+				{
+					toAddToRetTable["Farms"] = farmPercents;
+					retTable.Rows.Add(toAddToRetTable);
+				}
+
+				toAddToRetTable = retTable.NewRow();
+
+			}
+
+			//Change the object back to any farm and every farm
+			ChangeNetworkIDFarmID(-1, -1);
+			return retTable;
+		}
+
+		/*
+		* Retrieves all of the available networks
+		* 
+		* @return		A DataTable of All Networks
+		*/
+		public DataTable GetAllNetworks()
+		{
+			dbConnect.Open();
+			String query = "SELECT DISTINCT NetworkID FROM DataCenterNetworkId";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable allNetworks = new DataTable();
+			allNetworks.Load(queryCommandReader);
+			dbConnect.Close();
+			return allNetworks;
+		}
+
+		/*
+		* Retrieves all of the available farms
+		* 
+		* @return	A DataTable of All Farms
+		*/
+		public DataTable GetAllFarms()
+		{
+			dbConnect.Open();
+			String query = "SELECT DISTINCT FarmID FROM NetworkIdFarmId";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable allFarms = new DataTable();
+			allFarms.Load(queryCommandReader);
+			dbConnect.Close();
+			return allFarms;
+		}
+
+		/*
+ * Changes the start and end date
+ * 
+ * @param pStart		New start date
+ * @param pEnd			New end date
+ */
 		public void ChangeDate(DateTime pStart, DateTime pEnd)
 		{
 			start = pStart;
-			end = pEnd;
+			end = pEnd.AddDays(1);
 		}
 
 		/*
@@ -567,7 +864,7 @@ namespace MvcApplication1.Models
 			farmID = pFarmID;
 			pipeline = pPipeline;
 			start = pStart;
-			end = pEnd;
+			end = pEnd.AddDays(1);
 		}
 
 		/*
@@ -580,292 +877,5 @@ namespace MvcApplication1.Models
 			pipeline = pPipeline;
 		}
 
-		/*
-		 * Retrieves the names of the components for a pipeline
-		 * 
-		 * @param pPipeline		The pipeline whose components will be returned
-		 * @return		Array of componets for the pipeline
-		 */
-		public String[] getComponents(String pPipeline)
-		{
-			dbConnect.Open();
-			String query = "SELECT Component FROM PipelineComponent WHERE Pipeline = '" + pPipeline + "'";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable componentsForPipeline = new DataTable();
-			componentsForPipeline.Load(queryCommandReader);
-
-
-			String[] compsArray = new String[componentsForPipeline.Rows.Count];
-
-			for (int i = 0; i < componentsForPipeline.Rows.Count; i++)
-			{
-				compsArray[i] = (String)componentsForPipeline.Rows[i]["Component"];
-			}
-
-			dbConnect.Close();
-			return compsArray;
-		}
-
-		/*
-		 * Retrieves all the pipeline names 
-		 * 
-		 * @return a String array of all the pipelines
-		 */
-		public DataTable GetAllPipelines()
-		{
-			dbConnect.Open();
-			String query = "SELECT * FROM Pipeline";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable pipelines = new DataTable();
-			pipelines.Load(queryCommandReader);
-
-			dbConnect.Close();
-			return pipelines;
-		}
-
-		/*
-		 * 
-		 * 
-		 */
-		public String[] GetAllDataCentersArray()
-		{
-			dbConnect.Open();
-			String query = "SELECT DataCenter FROM DataCenter";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable dataCenters = new DataTable();
-			dataCenters.Load(queryCommandReader);
-
-
-			String[] dcArray = new String[dataCenters.Rows.Count];
-
-			for (int i = 0; i < dataCenters.Rows.Count; i++)
-			{
-				dcArray[i] = (String)dataCenters.Rows[i]["DataCenter"];
-			}
-
-			dbConnect.Close();
-			return dcArray;
-		}
-
-
-		public int[] GetAllFarmsInNetworkArray()
-		{
-			dbConnect.Open();
-			String query = "SELECT FarmId FROM NetworkIdFarmId WHERE NetworkId = " + networkID;
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable farmIDTable = new DataTable();
-			farmIDTable.Load(queryCommandReader);
-
-			int[] farmArray = new int[farmIDTable.Rows.Count];
-
-			for (int i = 0; i < farmIDTable.Rows.Count; i++)
-			{
-				farmArray[i] = (int)farmIDTable.Rows[i]["FarmId"];
-			}
-
-			dbConnect.Close();
-
-			return farmArray;
-		}
-
-		/*
-		 * Retrieves the datacenter with the lat and long
-		 * 
-		 * @return		DataTable with latitude and longitude
-		 */
-		public DataTable GetDataCenterLatLong()
-		{
-			dbConnect.Open();
-			String query = "SELECT DataCenter, latitude, longitude FROM DataCenter";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable dclatlong = new DataTable();
-			dclatlong.Load(queryCommandReader);
-			dbConnect.Close();
-			return dclatlong;
-		}
-
-		/*
-		 * 
-		 * 
-		 */
-		public decimal CalculatePipeOverview()
-		{
-			DataTable pipePercentTable = OverviewCalculate(pipeline);
-			decimal total = 0;
-
-			for (int i = 0; i < pipePercentTable.Rows.Count; i++)
-			{
-				total = total + (decimal)pipePercentTable.Rows[i]["Percent"];
-			}
-
-			if (pipePercentTable.Rows.Count == 0) return 0;
-
-			return Math.Round(total / pipePercentTable.Rows.Count, 4);
-		}
-
-		/*
-	   * Retrieves all the NetworkID's for a specific dataCenter
-	   * 
-	   * @return a DataTable of the NetworkID's
-	   */
-		public DataTable getNetworks(String dataCenter)
-		{
-			dbConnect.Open();
-			String query = "SELECT DISTINCT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable networks = new DataTable();
-			networks.Load(queryCommandReader);
-			dbConnect.Close();
-			return networks;
-		}
-
-		/*
-		* Retrieves all the FarmID for the NetworkID
-		* 
-		* @return a DataTable of the FarmID's
-		*/
-		public DataTable getFarms(int NetworkID)
-		{
-			//dbConnect.Open();
-			//String query = "SELECT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
-			//SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			//SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			//DataTable networks = new DataTable();
-			//networks.Load(queryCommandReader);
-			//dbConnect.Close();
-			DataTable farms = new DataTable();
-			DataColumn id = new DataColumn("FarmID", typeof(int));
-			DataColumn percent = new DataColumn("Percentage", typeof(double));
-			farms.Columns.Add(id);
-			farms.Columns.Add(percent);
-			for (int i = 0; i < random.Next(1, 30); i++)
-			{
-				DataRow newRow = farms.NewRow();
-				newRow["FarmID"] = random.Next(1000, 10000);
-				newRow["Percentage"] = Convert.ToDouble(String.Format("{0:0.0000}", random.NextDouble() * 100));
-				farms.Rows.Add(newRow);
-			}
-			return farms;
-		}
-
-		/*
-		 * So this is a whole big function again. Womp...
-		 * More complicated than anticipated
-		 * 
-		 */
-		public DataTable CalculateDataCenterHeatMap()
-		{
-			//Create a DataTable which has NetworkIDs, Percents (average of farms), and a DataTable of the Farms
-			DataTable retTable = new DataTable();
-			retTable.Columns.Add("NetworkID", typeof(int));
-			retTable.Columns.Add("Percent", typeof(decimal)); //potenial error
-			retTable.Columns.Add("Farms", typeof(DataTable));
-
-			//DataRow to add to the return table
-			DataRow toAddToRetTable = retTable.NewRow();
-
-			//Akk the NetworkIds in the current DataCenter
-			DataTable allNetsinDC = getNetworks(dataCenter);
-
-			//Iterate through all the Networks in the current DataCenter
-			for (int x = 0; x < allNetsinDC.Rows.Count; x++)
-			{
-				//farmPercents holds the list of farms for a network and the percents
-				DataTable farmPercents = new DataTable();
-				farmPercents.Columns.Add("Farms", typeof(int));
-				farmPercents.Columns.Add("Percent", typeof(decimal));
-				DataRow toAdd = farmPercents.NewRow();
-
-				//Retrieve all the farms in the network
-				int[] farms = GetAllFarmsInNetworkArray();
-
-				ChangeNetworkID((int)allNetsinDC.Rows[x]["NetworkID"]);
-
-				//iterate through the farms
-				for (int i = 0; i < farms.Length; i++)
-				{
-					ChangeFarmID(farms[i]);
-
-					//temp is the table which will be added to the retTable
-					DataTable temp = OverviewCalculate("Overview");
-
-					decimal per = 0;
-					toAdd["Farms"] = farms[i];
-					for (int k = 0; k < temp.Rows.Count; k++)
-					{
-						per = per + (decimal)temp.Rows[k]["Percent"];
-					}
-					toAdd["Percent"] = Math.Round(per / temp.Rows.Count, 4);
-
-					farmPercents.Rows.Add(toAdd);
-					toAdd = farmPercents.NewRow();
-				}
-
-				//addstuff here
-				decimal perRet = 0;
-
-				for (int i = 0; i < farmPercents.Rows.Count; i++)
-				{
-					perRet = perRet + (decimal)farmPercents.Rows[i]["Percent"];
-				}
-
-				toAddToRetTable["NetworkID"] = allNetsinDC.Rows[x]["NetworkID"];
-
-				if (perRet == 0) toAddToRetTable["Percent"] = 0;
-				else toAddToRetTable["Percent"] = Math.Round(perRet / farmPercents.Rows.Count, 4);
-
-				farmPercents.Rows.Add(toAdd);
-
-				toAddToRetTable["Farms"] = farmPercents;
-				retTable.Rows.Add(toAddToRetTable);
-
-				toAddToRetTable = retTable.NewRow();
-
-			}
-
-			//Change the object back to any farm and every farm
-			ChangeNetworkIDFarmID(-1, -1);
-			return retTable;
-		}
-
-		/*
-		* Retrieves all of the available networks
-		* 
-		* @return		A DataTable of All Networks
-		*/
-		public DataTable GetAllNetworks()
-		{
-			dbConnect.Open();
-			String query = "SELECT DISTINCT NetworkID FROM DataCenterNetworkId";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable allNetworks = new DataTable();
-			allNetworks.Load(queryCommandReader);
-			dbConnect.Close();
-			return allNetworks;
-		}
-
-		/*
-		* Retrieves all of the available farms
-		* 
-		* @return	A DataTable of All Farms
-		*/
-		public DataTable GetAllFarms()
-		{
-			dbConnect.Open();
-			String query = "SELECT DISTINCT FarmID FROM NetworkIdFarmId";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable allFarms = new DataTable();
-			allFarms.Load(queryCommandReader);
-			dbConnect.Close();
-			return allFarms;
-		}
 	}
 }
