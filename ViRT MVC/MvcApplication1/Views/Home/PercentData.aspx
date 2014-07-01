@@ -8,14 +8,6 @@
     <div id="chartdiv"></div>
     <script>
     	$(document).ready(function() {
-    		$(document).ajaxSend(function () {
-    			$("#loading").fadeIn();
-    		});
-
-    		$(document).ajaxComplete(function () {
-    			$("#loading").fadeOut("slow");
-    		});
-
     		$.ajax({
     			data: sessionStorage["query"],
     			url: '<%= Url.Action("getDatacenters", "Query") %>',
