@@ -1,0 +1,236 @@
+﻿    html {
+        height:100%;
+        margin:0;
+        padding:0;
+    }
+
+    body {
+        height: 100%;
+        margin: 0;
+        background-color: #0F0F0F;
+    }
+
+    p { 
+        color:#e1e1e1;
+    }                         
+
+    #pipelines {
+        background-color: #FF99CC;
+        height: 100%;
+        padding: 0;
+        padding-top: 60px;
+        float: left;
+        margin: 0;
+        -moz-box-shadow:    inset 0 0 10px #000000;
+        -webkit-box-shadow: inset 0 0 10px #000000;
+        box-shadow:         inset 0 0 10px #000000;
+    }
+
+    #pipelines ul {
+        padding:0;
+    }
+
+    #overviewbar {
+        background-color:#a30b71;
+        height: 100%;
+        padding: 60px 2% 0px 2%;
+        float: left;
+    }
+
+    .graph_header {
+        text-align:center;
+    }
+
+    #overviewbar h1 {
+        font-size: 25px;
+        margin-bottom: 30%;
+        font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+
+    #PercentDataLink {
+        text-align:center;
+    }
+
+    table {
+        width:100%;
+        background:none;
+    }
+
+    td {
+        font-size: 0.95em;
+    }
+
+    table,tr,tbody, td {
+        border:none;
+    }
+
+    .first {
+        font-size: 1.2em;
+        margin-bottom: 18%;
+    }
+    
+    .top-bar-section .right li .dropdown {
+        z-index:1000;
+    }
+
+    .overview_component {
+        float:left;
+        overflow:hidden;
+        margin-bottom: 15%;
+    }
+
+    .overview_percent {
+        float:right;
+        margin-bottom: 15%;
+    }
+
+    #rendering {
+        background-color:#0f0f0f;
+        height: 100%;
+        padding-top: 60px;
+        padding-left: 0;
+        float: left;
+        -moz-box-shadow:    inset 0 0 10px #000000;
+        -webkit-box-shadow: inset 0 0 10px #000000;
+        box-shadow:         inset 0 0 10px #000000;
+    }
+
+    .breadcrumbs {
+        border:none;
+        padding:0.98em 0.875rem 0.5625rem;
+        background:none; 
+    }
+
+    .breadcrumbs > *.current {
+        color: #E1E1E1;
+    }
+    
+    h1 {
+        text-align:center;
+        margin-bottom:30px;
+        font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+
+    #legendBar {
+        background-color: #FF00AE;
+        bottom: 0;
+        height: 11%;
+        padding:0.5%;
+        text-align:center;
+    }
+
+    #legendBar h1 {
+        font-size: 1.0em;
+        margin-bottom:10px;
+       font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+    
+    .button {
+        color:black;
+    }
+
+    
+
+	.green {
+		background-color: #43ac6a;
+	}
+
+	.yellow {
+		background-color: #ffff51;
+	}
+
+	.red1 {
+		background-color: #c52e2e;
+        color:#ffffff;
+	}
+
+	.red2 {
+		background-color:#4e1010;
+		color:white;
+	}
+
+	.red3 {
+		background-color: #330000;
+		color:white;
+	}
+
+    select {
+        width:inherit;
+    }
+
+    #dates {
+        float: right;
+        top: 0;
+        position: absolute;
+        right: 0;
+        margin-top: 2%;
+        margin-right: 2%;
+        z-index:100;
+    }
+
+    #small_dates label{
+        color:#ebebeb;
+        font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+
+    #chartdiv {
+        width: 95%;
+        height: 78%;
+        overflow: hidden;
+        margin-top: 1%;
+    }
+
+    #selectors {
+        margin-top:5.5%;
+        text-align:center;
+    }
+
+    #SelectDatacenter, #SelectNetwork, #SelectFarm {
+          display:inline-block;
+    }
+
+    #SelectNetwork {
+        margin: 0 4%;
+    }
+
+    	#loading {
+		display: none;
+		z-index: 100;
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.93);
+	}
+
+	#loading h1 {
+		margin-bottom: 1%;
+        margin-top: 18%;
+        font-family: "Segoe WP",Verdana,Helvetica,sans-serif;
+	}
+
+	#loading img {
+		width:100px;
+		height:100px;
+		margin:0 auto;
+	}
+
+    @media only screen and (max-width: 40em) {
+            #overviewbar{
+                padding: 12% 12% 0px 12%;
+                height:initial;
+            }
+
+           #overviewbar h1{
+               margin-bottom: 20%;
+
+           }
+          .overview_component,.overview_percent { 
+              font-size:1.1em;
+              margin-bottom: 6%;
+          }
+
+
+    } /* max-width 640px, mobile-only styles*/
+
+

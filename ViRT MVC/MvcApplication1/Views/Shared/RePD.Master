@@ -1,0 +1,22 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <%: Styles.Render("~/Content/RePD_css") %>
+    <%: Styles.Render("~/Content/themes/base/css") %>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryui") %>
+    <%: Scripts.Render("~/bundles/modernizr") %>
+      <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+</body>
+</html>

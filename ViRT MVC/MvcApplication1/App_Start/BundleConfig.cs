@@ -34,7 +34,12 @@ namespace MvcApplication1
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/foundation/foundation.css",
                 "~/Content/foundation/normalize.css",
-                "~/Content/site.css"));
+                "~/Content/ViRT_style.css"));
+
+            bundles.Add(new StyleBundle("~/Content/RePD_css").Include(
+                "~/Content/foundation/foundation.css",
+                "~/Content/foundation/normalize.css",
+                "~/Content/RePD_style.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/ViRT.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Head" ContentPlaceHolderID="Head" runat="server">
     <link href="../../Content/DCHM.css" rel="stylesheet" />
