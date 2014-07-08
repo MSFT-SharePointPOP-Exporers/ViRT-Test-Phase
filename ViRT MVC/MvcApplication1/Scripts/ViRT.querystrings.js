@@ -7,7 +7,8 @@ function setDefaults() {
 	sessionStorage["pipeline"] = "Overview";
 	sessionStorage["datacen"] = "All";
 	sessionStorage["network"] = -1;
-	sessionStorage["farm"] = -1;}
+	sessionStorage["farm"] = -1;
+}
 
 /*
     When the user goes back to the home screen, the sessionStorage values 
@@ -163,7 +164,6 @@ $(document).ready(function () {
 		defaultDate: sessionStorage["end"],
 		changeMonth: true,
 		changeYear: true,
-		maxDate: "+0D",
 		dateFormat: 'yy-mm-dd',
 		numberOfMonths: 1,
 		onClose: function (selectedDate) {
