@@ -12,7 +12,17 @@
 
     p { 
         color:#e1e1e1;
-    }                         
+    } 
+    
+        .breadcrumbs {
+        border:none;
+        padding:0.98em 0.875rem 0.5625rem;
+        background:none; 
+    }
+
+    .breadcrumbs > *.current {
+        color: #E1E1E1;
+    }                        
 
     #teams {
         background-color: #1E1E1E;

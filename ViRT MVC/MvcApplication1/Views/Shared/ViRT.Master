@@ -109,6 +109,9 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
+      <ul class="button">
+          <li><a href ="../RePD/Index">MSR Report</a></li>
+      </ul>
           <li class="has-dropdown show-for-medium-down">
             <a href="#">Change Pipeline</a>
             <ul class="dropdown pipelines">
