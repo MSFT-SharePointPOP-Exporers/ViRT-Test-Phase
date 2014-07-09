@@ -11,7 +11,7 @@
     <%: Styles.Render("~/Content/css") %>
     <%: Styles.Render("~/Content/themes/base/css") %>
     <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryui") %>
+    <%: Scripts.Render("~/bundles/ViRT_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
       <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
 
@@ -35,6 +35,7 @@
                       for (var x = data.length - 1; x >= 0; x--) {
                           $(".pipelines").append("<li class='pipe' id='" + data[x].Pipeline + "' onclick='setPipeline(this.id)'><a href='#'>" + data[x].Pipeline + "</a></li>");
                       }
+                      setSelectedPipeline();
                   }
               });
 

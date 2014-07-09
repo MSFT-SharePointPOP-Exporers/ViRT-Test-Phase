@@ -9,14 +9,76 @@
     <%: Styles.Render("~/Content/RePD_css") %>
     <%: Styles.Render("~/Content/themes/base/css") %>
     <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryui") %>
+    <%: Scripts.Render("~/bundles/RePD_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
       <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="Head" runat="server" ></asp:ContentPlaceHolder>
 </head>
 <body>
-    <div>
-        <asp:ContentPlaceHolder ID="MainContent" runat="server">
-        </asp:ContentPlaceHolder>
+    <nav class="top-bar" data-topbar>
+      <!-- Left Nav Section -->
+      <ul class="title-area">
+        <li class="name">
+        </li>
+        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="has-dropdown show-for-medium-down">
+            <a href="#">Change Team</a>
+            <ul class="side-nav pipelines">
+                <li class="pipe" id="Overview" onclick="setPipeline(this.id)"><a href="#">Overview</a></li>
+                <li class="pipe" id="DynamicClaims" onclick="setPipeline(this.id)"><a href="#">DynamicClaims</a></li>
+                <li class="pipe" id="AppAuthOverview" onclick="setPipeline(this.id)"><a href="#">AppAuthOverview</a></li>
+                <li class="pipe" id="UserLogin" onclick="setPipeline(this.id)"><a href="#">UserLogin</a></li>
+
+            </ul>
+          </li>
+          <li class="has-form  show-for-small-only">
+            <div id="small_dates" class="dates show-for-medium-down medium-12 small-12">
+                <label for="month">Select Month:</label>
+                <input type="text" class="month" name="month" />
+              <a href="#" class="button success [small large] expand">Apply Date Filters</a>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </nav>
+    <div id="teams" class="show-for-large-up large-1 columns">
+    <ul class="side-nav pipelines">
+        <li class="pipe" id="TenantPlatform" onclick="setTeam(this.id)"><a href="#">Tenant Platform</a></li>
+        <li class="pipe" id="Authentication" onclick="setTeam(this.id)"><a href="#">Authentication</a></li>
+        <li class="pipe" id="OneDrive" onclick="setTeam(this.id)"><a href="#">OneDrive</a></li>
+        <li class="pipe" id="Profile" onclick="setTeam(this.id)"><a href="#">Profile</a></li>
+    </ul>
     </div>
-</body>
+    <div id="rendering" class="small-12 medium-11 large-11 columns">
+        <h1></h1>
+      <div id="dates" class="dates large-2 medium-2 columns show-for-medium-up">
+            <label for="month">Select Month:</label>
+            <input type="text" class="month" name="month" />
+        <a href="#" class="button success [tiny small large] expand">Apply Date Filters</a>
+      </div>
+      <div id="legend" class="dates large-2 medium-2 columns show-for-medium-up">
+        <table>
+         <tr>
+           <th>Legend</th>
+         </tr>
+         <tr>
+           <td class="green">[99.00, 100]</td>
+         </tr>
+          <tr>
+           <td class="yellow">[99.00, 99.90)</td>
+         </tr>
+          <tr>
+           <td class="red">[0, 99.00)</td>
+         </tr>
+        </table>
+      </div>
+      <asp:ContentPlaceHolder ID="FeaturedContent" runat="server" />
+      <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </div>
+  </body>
 </html>

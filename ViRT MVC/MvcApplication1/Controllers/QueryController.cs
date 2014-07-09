@@ -58,5 +58,20 @@ namespace MvcApplication1.Controllers
 
             return JsonConvert.SerializeObject(table, Formatting.Indented);
         }
+
+        public string getTeams()
+        {
+            return "";
+        }
+
+        public string getReliability()
+        {
+            return "";
+        }
+
+        public string getPerformance()
+        {
+            return "";
+        }
     }
 }

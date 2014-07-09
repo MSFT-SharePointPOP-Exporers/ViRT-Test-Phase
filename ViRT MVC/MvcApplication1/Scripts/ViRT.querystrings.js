@@ -60,6 +60,16 @@ function setFields() {
 }
 
 /*
+  Changes the background color and the text color of the pipeline selected. This is determined by the query string.
+*/
+function setSelectedPipeline() {
+    $("#" + sessionStorage["pipeline"] + " a:not(.button)").css({
+        "color": "black",
+        "background-color": "#008cba"
+    });
+}
+
+/*
     Takes in an parameter for the selected element's id, whose type is string.
     This function is meant for the list of pipelines on the left side of the page.
     Sets the sessionStorage variable for the pipeline to the id parameter, then updates the query string.

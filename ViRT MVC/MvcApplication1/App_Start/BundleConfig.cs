@@ -18,9 +18,13 @@ namespace MvcApplication1
                         "~/Scripts/querystring-0.9.0.js",
                         "~/Scripts/jquery.cookie.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ViRT_jqueryui").Include(
                         "~/Scripts/jquery-ui-1.10.4.js",
-                        "~/Scripts/querystrings.js"));
+                        "~/Scripts/ViRT.querystrings.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/RePD_jqueryui").Include(
+                        "~/Scripts/jquery-ui-1.10.4.js",
+                        "~/Scripts/RePD.querystrings.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
