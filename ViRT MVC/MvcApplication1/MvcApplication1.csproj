@@ -186,7 +186,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\RePD_QueryController.cs" />
+    <Compile Include="Controllers\ViRT_QueryController.cs" />
     <Compile Include="Controllers\RePDController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

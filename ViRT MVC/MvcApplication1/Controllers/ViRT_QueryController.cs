@@ -12,7 +12,7 @@ using MvcApplication1.Models;
 
 namespace MvcApplication1.Controllers
 {
-    public class QueryController : Controller
+    public class ViRT_QueryController : Controller
     {
         Reliability test = new Reliability();
  
