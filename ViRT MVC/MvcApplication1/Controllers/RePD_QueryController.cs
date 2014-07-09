@@ -12,25 +12,35 @@ using MvcApplication1.Models;
 namespace MvcApplication1.Controllers
 {
     public class RePD_QueryController : Controller
-    {   
+    {
+        public string getRange()
+        {
+            return "testetsess";
+        }
+
         public string getTeams()
         {
-            return "";
+            return "teststetsa";
         }
 
         public string getReliability()
         {
-            return "";
+            return "yetestst";
         }
 
         public string getPerformance()
         {
-            return "";
+            return "testetss";
         }
 
         public string getQOS()
         {
-            return "";
+            return "testetstt";
+        }
+
+        public string getLatency()
+        {
+            return "testetstt";
         }
     }
 }

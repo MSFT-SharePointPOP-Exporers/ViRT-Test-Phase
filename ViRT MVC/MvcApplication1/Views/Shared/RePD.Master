@@ -12,6 +12,31 @@
     <%: Scripts.Render("~/bundles/RePD_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
       <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+
+            //Updates the range and the legend.
+            $.ajax({
+                url: '<%= Url.Action("getRange", "RePD_Query") %>',
+                success: function (data) {
+                    $("#legend .green").append("[" + upper.toFixed(2) + ", 100]");
+                    $("#legend .yellow").append("[" + lower.toFixed(2) + "," + upper.toFixed(2) + ")");
+                    $("#legend .red").append("[" + 0 + "," + lower.toFixed(2) + ")");
+                }
+            });
+
+            //Will grab team names.
+           // $.ajax({
+            //    url: '<%= Url.Action("getTeams", "ViRT_Query") %>',
+              //  success: function (data) {
+                  //  for (var x = data.length - 1; x >= 0; x--) {
+               //         $(".teams").append("<li class='team' id='" + data[x].Team + "' onclick='setTeam(this.id)'><a href='#'>" + data[x].Team + "</a></li>");
+              //      }
+             //       setSelectedTeam();
+            //    }
+           // });
+        });
+    </script>
     <asp:ContentPlaceHolder ID="Head" runat="server" ></asp:ContentPlaceHolder>
 </head>
 <body>
@@ -27,14 +52,6 @@
         <!-- Right Nav Section -->
         <ul class="right">
           <li class="has-dropdown show-for-medium-down">
-            <a href="#">Change Team</a>
-            <ul class="side-nav pipelines">
-                <li class="pipe" id="Overview" onclick="setPipeline(this.id)"><a href="#">Overview</a></li>
-                <li class="pipe" id="DynamicClaims" onclick="setPipeline(this.id)"><a href="#">DynamicClaims</a></li>
-                <li class="pipe" id="AppAuthOverview" onclick="setPipeline(this.id)"><a href="#">AppAuthOverview</a></li>
-                <li class="pipe" id="UserLogin" onclick="setPipeline(this.id)"><a href="#">UserLogin</a></li>
-
-            </ul>
           </li>
           <li class="has-form  show-for-small-only">
             <div id="small_dates" class="dates show-for-medium-down medium-12 small-12">
@@ -47,11 +64,11 @@
       </section>
     </nav>
     <div id="teams" class="show-for-large-up large-1 columns">
-    <ul class="side-nav pipelines">
-        <li class="pipe" id="TenantPlatform" onclick="setTeam(this.id)"><a href="#">Tenant Platform</a></li>
-        <li class="pipe" id="Authentication" onclick="setTeam(this.id)"><a href="#">Authentication</a></li>
-        <li class="pipe" id="OneDrive" onclick="setTeam(this.id)"><a href="#">OneDrive</a></li>
-        <li class="pipe" id="Profile" onclick="setTeam(this.id)"><a href="#">Profile</a></li>
+    <ul class="side-nav teams">
+        <li class="team" id="TenantPlatform" onclick="setTeam(this.id)"><a href="#">Tenant Platform</a></li>
+        <li class="team" id="Authentication" onclick="setTeam(this.id)"><a href="#">Authentication</a></li>
+        <li class="team" id="OneDrive" onclick="setTeam(this.id)"><a href="#">OneDrive</a></li>
+        <li class="team" id="Profile" onclick="setTeam(this.id)"><a href="#">Profile</a></li>
     </ul>
     </div>
     <div id="rendering" class="small-12 medium-11 large-11 columns">
@@ -67,13 +84,13 @@
            <th>Legend</th>
          </tr>
          <tr>
-           <td class="green">[99.00, 100]</td>
+           <td class="green"></td>
          </tr>
           <tr>
-           <td class="yellow">[99.00, 99.90)</td>
+           <td class="yellow"></td>
          </tr>
           <tr>
-           <td class="red">[0, 99.00)</td>
+           <td class="red"></td>
          </tr>
         </table>
       </div>

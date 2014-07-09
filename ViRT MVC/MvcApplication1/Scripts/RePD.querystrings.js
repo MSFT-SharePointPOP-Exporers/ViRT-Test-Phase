@@ -1,4 +1,11 @@
 ﻿var date = new Date();
+var upper = 99.90;
+var lower = 99.00;
+var reliability = 99.54;
+var performance = 99.68;
+var QoS = 99.18;
+var latency = 127;
+
 
 function setDefaults() {
     sessionStorage["team"] = "Authentication";

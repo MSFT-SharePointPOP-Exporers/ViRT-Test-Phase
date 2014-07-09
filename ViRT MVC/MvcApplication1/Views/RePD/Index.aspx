@@ -8,6 +8,65 @@
     <script>
         $(document).ready(function () {
             $("#rendering h1").append($.QueryString("team"));
+
+            $.ajax({
+                url: '<%= Url.Action("getReliability", "RePD_Query") %>',
+                success: function (data) {
+                    $(".reliability").append(reliability + "%");
+                    if (reliability > upper) {
+                        $(".reliability").addClass("green");
+                    } else if (reliability > lower && reliability < upper) {
+                        $(".reliability").addClass("yellow");
+                    } else if (reliability < lower) {
+                        $(".reliability").addClass("red");
+                    }
+                }
+            });
+
+            $.ajax({
+                url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
+                success: function (data) {
+                    $(".performance").append(performance + "%");
+                    if (performance > upper) {
+                        $(".performance").addClass("green");
+                    } else if (performance > lower && performance < upper) {
+                        $(".performance").addClass("yellow");
+                    } else if (performance < lower) {
+                        $(".performance").addClass("red");
+                    }
+                }
+            });
+
+            $.ajax({
+                url: '<%= Url.Action("getQoS", "RePD_Query") %>',
+                success: function (data) {
+                    $(".qos").append(QoS + "%");
+                    if (QoS > upper) {
+                        $(".qos").addClass("green");
+                    } else if (QoS > lower && QoS < upper) {
+                        $(".qos").addClass("yellow");
+                    } else if (QoS < lower) {
+                        $(".qos").addClass("red");
+                    }
+                }
+            });
+
+            //It just so happens that it works. But fix it.
+            $.ajax({
+                url: '<%= Url.Action("getLatency", "RePD_Query") %>',
+                success: function (data) {
+                    $(".latency").append(latency + "ms");
+                    if (latency > upper) {
+                        $(".latency").addClass("green");
+                    } else if (latency > lower && latency < upper) {
+                        $(".latency").addClass("yellow");
+                    } else if (latency < lower) {
+                        $(".latency").addClass("red");
+                    }
+                }
+            });
+
+
         });
     </script>
 </asp:Content>
@@ -19,19 +78,19 @@
   <tr>
     <td rowspan="2">QoS</td>
     <td>Reliability</td>
-    <td class="text yellow">99.54%</td><!--Reliability-->
-    <td class="text yellow" rowspan="2">99.18%</td><!--QoS-->
+    <td class="text reliability"></td><!--Reliability-->
+    <td class="text qos" rowspan="2"></td><!--QoS-->
   </tr>
   <tr>
     <td class="secondary">Performance</td>
-    <td class="text yellow">99.68%</td><!--Performance-->
+    <td class="text performance"></td><!--Performance-->
   </tr>
   <tr>
     <td class="text" colspan="3">
      95th percentile server latency*<br />
      *Goal is < 200 ms
     </td>
-    <td class="text green">127 ms</td>
+    <td class="text latency"></td>
   </tr>
 </table>
         </div>
