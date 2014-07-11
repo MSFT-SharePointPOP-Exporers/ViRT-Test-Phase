@@ -1,7 +1,7 @@
 ﻿var date = new Date();
 var upper = 99.9057654764;
 var lower = 91.054;
-var reliability = 94.14465654745;
+var reliability;
 var performance = 99.68764574574847;
 var QoS = 99.186453654363;
 var latency = 127;

@@ -13,9 +13,11 @@ namespace MvcApplication1.Controllers
 {
     public class RePD_QueryController : Controller
     {
-        public string getRange()
+        MSRreliability rel = new MSRreliability();
+
+        public decimal getRange()
         {
-            return "testetsess";
+            return rel.MonthReliabilityPercent(Convert.ToDateTime(Request.QueryString["start"]));
         }
 
         public string getTeams()
@@ -23,9 +25,9 @@ namespace MvcApplication1.Controllers
             return "teststetsa";
         }
 
-        public string getReliability()
+        public decimal getReliability()
         {
-            return "yetestst";
+            return rel.MonthReliabilityPercent(Convert.ToDateTime(Request.QueryString["start"]));
         }
 
         public string getPerformance()

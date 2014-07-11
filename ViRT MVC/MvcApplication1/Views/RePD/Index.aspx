@@ -16,8 +16,10 @@
             $("#rendering h1").append($.QueryString("team"));
 
             $.ajax({
+                data: "start=" + sessionStorage["start"],
                 url: '<%= Url.Action("getReliability", "RePD_Query") %>',
                 success: function (data) {
+                    reliability = parseFloat(data);
                     $(".reliability").append(reliability.toFixed(2) + "%");
                     if (reliability > upper) {
                         $(".reliability").addClass("green");
@@ -103,7 +105,8 @@
   </tr>
 </table>
         </div>
-    <div id="chartdiv"></div>
+
+    <div id="chartdiv" width="50%An airline carrier is losing a lot of bags. You have been assigned to help them out. What would you do?"><h2>Overall Reliability</h2></div>
     <script>
         var bullets = ["round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "diamond", "xError", "yError"];
         var data = <%= Html.Raw(ViewBag.MSRreliabilityChart)%>;//generateChartData();
@@ -144,7 +147,7 @@
                     graph1.type = "line";
                     graph1.valueField = propertyName;
                     graph1.balloonText = "<b><span style='font-size:14px;'>[[title]]</span></b><br />[[category]]<br /><span style='font-size:14px;'>Reliability: [[value]]</span>";
-                    graph1.title = propertyName;
+                    graph1.title = "ReliabilitY";
                     graph1.bullet = bullets[i];
                     graph1.bulletSize = 10;
                     graph1.hideBulletsCount = 30;
