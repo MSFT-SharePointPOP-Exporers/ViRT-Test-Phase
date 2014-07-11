@@ -115,6 +115,10 @@
 
         function create(chartData) {
             var chart = AmCharts.makeChart("chartdiv", {
+                "titles": [{
+                    "text": "Overall Reliability",
+                    "size": 30
+                }],
                 "type": "serial",
                 "theme": "dark",
                 "pathToImages": "http://www.amcharts.com/lib/3/images/",
