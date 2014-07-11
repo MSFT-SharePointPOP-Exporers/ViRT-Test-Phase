@@ -18,9 +18,13 @@ namespace MvcApplication1
                         "~/Scripts/querystring-0.9.0.js",
                         "~/Scripts/jquery.cookie.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ViRT_jqueryui").Include(
                         "~/Scripts/jquery-ui-1.10.4.js",
-                        "~/Scripts/querystrings.js"));
+                        "~/Scripts/ViRT.querystrings.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/RePD_jqueryui").Include(
+                        "~/Scripts/jquery-ui-1.10.4.js",
+                        "~/Scripts/RePD.querystrings.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
@@ -34,7 +38,12 @@ namespace MvcApplication1
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/foundation/foundation.css",
                 "~/Content/foundation/normalize.css",
-                "~/Content/site.css"));
+                "~/Content/ViRT_style.css"));
+
+            bundles.Add(new StyleBundle("~/Content/RePD_css").Include(
+                "~/Content/foundation/foundation.css",
+                "~/Content/foundation/normalize.css",
+                "~/Content/RePD_style.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

@@ -186,7 +186,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\RePD_QueryController.cs" />
+    <Compile Include="Controllers\ViRT_QueryController.cs" />
+    <Compile Include="Controllers\RePDController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -202,6 +204,7 @@
     <Content Include="Content\foundation\foundation.min.css" />
     <Content Include="Content\foundation\normalize.css" />
     <Content Include="Content\Dark Theme.css" />
+    <Content Include="Content\RePD_style.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -316,13 +319,14 @@
     <Content Include="Scripts\foundation\vendor\fastclick.js" />
     <Content Include="Scripts\foundation\vendor\jquery.cookie.js" />
     <Content Include="Scripts\foundation\vendor\jquery.js" />
+    <Content Include="Scripts\RePD.querystrings.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.dateFormat-1.0.js" />
     <Content Include="Scripts\modernizr.js" />
     <Content Include="Scripts\foundation\vendor\placeholder.js" />
     <Content Include="Scripts\querystring-0.9.0.js" />
-    <Content Include="Scripts\querystrings.js" />
+    <Content Include="Scripts\ViRT.querystrings.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -341,6 +345,7 @@
     <Content Include="Scripts\amcharts\themes\light.js" />
     <Content Include="Views\Home\PercentData.aspx" />
     <Content Include="Views\Home\RawData.aspx" />
+    <Content Include="Views\RePD\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -348,7 +353,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\ViRT_style.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
@@ -363,19 +368,11 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Views\Account\_ChangePasswordPartial.aspx" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.aspx" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.aspx" />
-    <Content Include="Views\Account\_SetPasswordPartial.aspx" />
-    <Content Include="Views\Account\Login.aspx" />
-    <Content Include="Views\Account\Manage.aspx" />
-    <Content Include="Views\Account\Register.aspx" />
-    <Content Include="Views\Account\ExternalLoginFailure.aspx" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.aspx" />
     <Content Include="Views\Home\DCHM.aspx" />
     <Content Include="Views\Home\Index.aspx" />
-    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\Shared\ViRT.Master" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\RePD.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

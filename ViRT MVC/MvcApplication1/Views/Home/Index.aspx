@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/ViRT.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="scripts" ContentPlaceHolderID="Head" runat="server">
         <link href="../../Content/amcharts/ammap.css" rel="stylesheet" />

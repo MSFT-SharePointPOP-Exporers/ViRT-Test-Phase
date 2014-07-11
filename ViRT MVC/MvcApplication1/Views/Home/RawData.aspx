@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/ViRT.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
     <link href="../../Content/Raw%20Data.css" rel="stylesheet" />
@@ -35,7 +35,7 @@
 
     		$.ajax({
     			data: sessionStorage["query"],
-    			url: '<%= Url.Action("getDatacenters", "Query") %>',
+    			url: '<%= Url.Action("getDatacenters", "ViRT_Query") %>',
                 dataType: "json",
                 success: function (data) {
                 	$("#FeaturedContent_Datacenter").append("<option value='All'>All</option>");
@@ -48,7 +48,7 @@
 
         	$.ajax({
         		data: sessionStorage["query"],
-        		url: '<%= Url.Action("getNetworks", "Query") %>',
+        		url: '<%= Url.Action("getNetworks", "ViRT_Query") %>',
                 dataType: "json",
                 success: function (data) {
                 	$("#FeaturedContent_Network").append("<option value='-1'>All</option>");
@@ -61,7 +61,7 @@
 
         	$.ajax({
         		data: sessionStorage["query"],
-        		url: '<%= Url.Action("getFarms", "Query") %>',
+        		url: '<%= Url.Action("getFarms", "ViRT_Query") %>',
                 dataType: "json",
                 success: function (data) {
                 	$("#FeaturedContent_Farm").append("<option value='-1'>All</option>");

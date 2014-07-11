@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/ViRT.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Head" ContentPlaceHolderID="Head" runat="server">
     <link href="../../Content/DCHM.css" rel="stylesheet" />
@@ -16,7 +16,7 @@
                 $("#rendering h1").append($.QueryString("datacen").substring(0, 3));
                 $.ajax({
                     data: sessionStorage["query"],
-                    url: '<%= Url.Action("getNetworkFarm", "Query") %>',
+                    url: '<%= Url.Action("getNetworkFarm", "ViRT_Query") %>',
                     dataType: "json",
                     success: function (data) {
                         $(".dchm").append('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">');
