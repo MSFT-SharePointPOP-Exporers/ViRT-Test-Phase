@@ -11,7 +11,7 @@
     <%: Styles.Render("~/Content/css") %>
     <%: Styles.Render("~/Content/themes/base/css") %>
     <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryui") %>
+    <%: Scripts.Render("~/bundles/ViRT_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
       <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
 
@@ -29,18 +29,19 @@
               $.ajax({
                   contentType: "application/json",
                   data: "",
-                  url: '<%= Url.Action("getPipelines", "Query") %>',
+                  url: '<%= Url.Action("getPipelines", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
                       for (var x = data.length - 1; x >= 0; x--) {
                           $(".pipelines").append("<li class='pipe' id='" + data[x].Pipeline + "' onclick='setPipeline(this.id)'><a href='#'>" + data[x].Pipeline + "</a></li>");
                       }
+                      setSelectedPipeline();
                   }
               });
 
               $.ajax({
                   data: "pipeline=Overview",
-                  url: '<%= Url.Action("getOverview", "Query") %>',
+                  url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
                       console.log(data);
@@ -57,7 +58,7 @@
 
               $.ajax({
                   data: "pipeline=" + sessionStorage["pipeline"],
-                  url: '<%= Url.Action("getOverview", "Query") %>',
+                  url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
                       console.log(data);
@@ -108,6 +109,7 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
+          <li><a href ="../RePD/Index">MSR Report</a></li>
           <li class="has-dropdown show-for-medium-down">
             <a href="#">Change Pipeline</a>
             <ul class="dropdown pipelines">

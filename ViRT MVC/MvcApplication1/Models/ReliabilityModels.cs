@@ -98,7 +98,7 @@ namespace MvcApplication1.Models
 		private DataTable TagHitTable(String pTag)
 		{
 			//Strings that create the query
-			String query = "SELECT Date, Hour, NumberOfHits FROM ProdDollar_RandomJess";
+			String query = "SELECT Date, Hour, NumberOfHits FROM ProdDollar_TagAggregationCopy";
 			String where = " WHERE Tag = '" + pTag + "' AND Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "'";
 
 			//Creates the remainer of the where portion of the query
