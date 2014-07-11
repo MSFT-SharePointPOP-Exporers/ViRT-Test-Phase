@@ -18,7 +18,7 @@
             $.ajax({
                 url: '<%= Url.Action("getReliability", "RePD_Query") %>',
                 success: function (data) {
-                    $(".reliability").append(reliability + "%");
+                    $(".reliability").append(reliability.toFixed(2) + "%");
                     if (reliability > upper) {
                         $(".reliability").addClass("green");
                     } else if (reliability > lower && reliability < upper) {
@@ -32,7 +32,7 @@
             $.ajax({
                 url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
                 success: function (data) {
-                    $(".performance").append(performance + "%");
+                    $(".performance").append(performance.toFixed(2) + "%");
                     if (performance > upper) {
                         $(".performance").addClass("green");
                     } else if (performance > lower && performance < upper) {
@@ -46,7 +46,7 @@
             $.ajax({
                 url: '<%= Url.Action("getQoS", "RePD_Query") %>',
                 success: function (data) {
-                    $(".qos").append(QoS + "%");
+                    $(".qos").append(QoS.toFixed(2) + "%");
                     if (QoS > upper) {
                         $(".qos").addClass("green");
                     } else if (QoS > lower && QoS < upper) {
