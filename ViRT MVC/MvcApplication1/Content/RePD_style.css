@@ -132,7 +132,9 @@ overflow: hidden;
     #overallstats {
         width: 100%;
         height: auto;
-    }
+    
+        margin-bottom: 7%;
+}
 
     #overallstats table {
         height: 318px;
@@ -168,6 +170,11 @@ overflow: hidden;
 		background-color: #c52e2e;
         color:#ffffff;
 	}
+
+    #chartdiv {
+	    width	: 53%;
+	    height	: auto;
+    }	
 
 
     #loading {

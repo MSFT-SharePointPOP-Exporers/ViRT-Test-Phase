@@ -106,7 +106,7 @@
 </table>
         </div>
 
-    <div id="chartdiv" width="50%An airline carrier is losing a lot of bags. You have been assigned to help them out. What would you do?"><h2>Overall Reliability</h2></div>
+    <div id="chartdiv" width="50%"><h2>Overall Reliability</h2></div>
     <script>
         var bullets = ["round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "diamond", "xError", "yError"];
         var data = <%= Html.Raw(ViewBag.MSRreliabilityChart)%>;//generateChartData();
@@ -117,7 +117,8 @@
             var chart = AmCharts.makeChart("chartdiv", {
                 "titles": [{
                     "text": "Overall Reliability",
-                    "size": 30
+                    "size": 30,
+                    "bold": false
                 }],
                 "type": "serial",
                 "theme": "dark",
