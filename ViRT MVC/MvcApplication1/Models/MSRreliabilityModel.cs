@@ -10,7 +10,8 @@ namespace MvcApplication1.Models
 {
 	public class MSRreliability
     {
-		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
+		//Connection string for DB queries
+		private SqlConnection dbConnect = new SqlConnection("Data Source=FIDEL3127;Initial Catalog=VisDataTestCOSMOS;Integrated Security=True;");
 
 		/// <summary>
 		/// Constructor for a MSR_Reliability Object
@@ -35,9 +36,12 @@ namespace MvcApplication1.Models
 			DateTime start = monthYear;
 			DateTime end = (monthYear.AddMonths(1)).AddDays(-1);
 
-			int successCount = CalculateTagTotal(successTag, start, end);
-			int failureCount = CalculateTagTotal(failureTag, start, end);
-			int userErrCount = CalculateTagTotal(userErrTag, start, end);
+			long successCount = CalculateTagTotal(successTag, start, end);
+			Console.WriteLine(successCount);
+			long failureCount = CalculateTagTotal(failureTag, start, end);
+			Console.WriteLine(failureCount);
+			long userErrCount = CalculateTagTotal(userErrTag, start, end);
+			Console.WriteLine(userErrCount);
 
 			if (successCount + failureCount == 0) return 0;
 
@@ -69,9 +73,9 @@ namespace MvcApplication1.Models
 		/// <param name="start">Start of the month</param>
 		/// <param name="end">End of the month</param>
 		/// <returns>Total number of hits</returns>
-		private int CalculateTagTotal(String tag, DateTime start, DateTime end)
+		private long CalculateTagTotal(String tag, DateTime start, DateTime end)
 		{
-			String sumQuery = "SELECT SUM(NumberOfHits) AS TokenIssuances FROM ProdDollar_TagAggregationCopy WHERE Tag = '" + 
+			String sumQuery = "SELECT SUM(CAST(NumberOfHits AS BIGINT)) AS TokenIssuances FROM ProdDollar_TagAggregationCopy WHERE Tag = '" +
 				tag + "' AND Date BETWEEN '" + start.ToString() + "' AND '" + end.ToString() + "'";
 
 			SqlCommand queryCommand = new SqlCommand(sumQuery, dbConnect);
@@ -80,7 +84,7 @@ namespace MvcApplication1.Models
 			sumTag.Load(queryCommandReader);
 
 			if (sumTag.Rows[0].IsNull(0)) return 0;
-			return (int)sumTag.Rows[0]["TokenIssuances"];
+			return (long)sumTag.Rows[0]["TokenIssuances"];
 		}
 
 		/// <summary>
@@ -155,7 +159,7 @@ namespace MvcApplication1.Models
 
 			for (DateTime i = start; i <= end; i = i.AddDays(1))
 			{
-				
+
 
 				for (int j = 0; j < successTable.Rows.Count; j++)
 				{
@@ -191,7 +195,7 @@ namespace MvcApplication1.Models
 					toAdd["Date"] = i;
 					datePercent.Rows.Add(toAdd);
 				}
-				
+
 				toAdd = datePercent.NewRow();
 				succ = 0;
 				fail = 0;
