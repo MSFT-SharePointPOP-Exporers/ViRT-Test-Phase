@@ -12,7 +12,7 @@ namespace MvcApplication1.Models
     {
 		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
 
-/// <summary>
+		/// <summary>
 		/// Constructor for a MSR_Reliability Object
 		/// </summary>
 		public MSRreliability()
