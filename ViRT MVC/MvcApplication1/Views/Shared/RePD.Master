@@ -1,4 +1,5 @@
-﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+﻿
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 
 <!DOCTYPE html>
 
@@ -26,15 +27,15 @@
             });
 
             //Will grab team names.
-           // $.ajax({
-            //    url: '<%= Url.Action("getTeams", "ViRT_Query") %>',
-              //  success: function (data) {
-                  //  for (var x = data.length - 1; x >= 0; x--) {
-               //         $(".teams").append("<li class='team' id='" + data[x].Team + "' onclick='setTeam(this.id)'><a href='#'>" + data[x].Team + "</a></li>");
-              //      }
-             //       setSelectedTeam();
-            //    }
-           // });
+            $.ajax({
+                url: '<%= Url.Action("getTeams", "ViRT_Query") %>',
+                success: function (data) {
+                    for (var x = data.length - 1; x >= 0; x--) {
+                        $(".teams").append("<li class='team' id='" + data[x].Team + "' onclick='setTeam(this.id)'><a href='#'>" + data[x].Team + "</a></li>");
+                    }
+                    setSelectedTeam();
+                }
+            });
         });
     </script>
     <asp:ContentPlaceHolder ID="Head" runat="server" ></asp:ContentPlaceHolder>

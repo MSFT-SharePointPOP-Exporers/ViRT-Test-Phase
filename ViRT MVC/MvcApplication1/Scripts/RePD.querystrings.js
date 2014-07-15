@@ -1,9 +1,9 @@
 ﻿var date = new Date();
-var upper = 99.90;
-var lower = 99.00;
-var reliability = 66.15;
-var performance = 99.68;
-var QoS = 99.18;
+var upper = 99.9057654764;
+var lower = 91.054;
+var reliability;
+var performance = 99.68764574574847;
+var QoS = 99.186453654363;
 var latency = 127;
 
 
@@ -35,6 +35,7 @@ function setTeam(id) {
     updateQueryString();
 }
 
+
 /*
   Changes the background color and the text color of the team selected. This is determined by the query string.
 */
@@ -61,6 +62,11 @@ $(document).ready(function () {
         sessionStorage["start"] = $(".month").val();
         updateQueryString();
     });
+
+    if (sessionStorage["team"] != "Authentication") {
+        $("#overallstats").hide();
+        $("#rendering").append("<h2>Data Unavailable<br/>:(</h2>");
+    }
 });
 
 //Move Elsewhere!
