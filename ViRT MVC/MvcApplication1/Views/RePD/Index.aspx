@@ -62,8 +62,10 @@
             //It just so happens that it works. But fix it.
             $.ajax({
                 url: '<%= Url.Action("getLatency", "RePD_Query") %>',
+                data: "start=" + sessionStorage["start"],
                 success: function (data) {
-                    $(".latency").append(latency + "ms");
+                    latency = parseInt(data);
+                    $(".latency").append(latency + " ms");
                     if (latency > upper) {
                         $(".latency").addClass("green");
                     } else if (latency > lower && latency < upper) {
