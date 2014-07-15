@@ -17,7 +17,7 @@ namespace MvcApplication1.Controllers
 
         public decimal getRange()
         {
-            return rel.MonthReliabilityPercent(Convert.ToDateTime(Request.QueryString["start"]));
+            return 487.1846846846M;
         }
 
         public string getTeams()

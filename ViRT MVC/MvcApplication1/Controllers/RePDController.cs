@@ -16,7 +16,7 @@ namespace MvcApplication1.Controllers
         {
             MSRreliability reliability = new MSRreliability();
             DateTime newdate = new DateTime(2013, 7, 1);
-            DataTable MSRreliabilityChart = reliability.ReliaiblityDailyTable(newdate);//Convert.ToDateTime(Request.QueryString["start"]));
+            DataTable MSRreliabilityChart = reliability.ReliaiblityDailyTable(Convert.ToDateTime(Request.QueryString["start"]));//Convert.ToDateTime(Request.QueryString["start"]));
             var json = JsonConvert.SerializeObject(MSRreliabilityChart, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             ViewBag.MSRreliabilityChart = json;
             return View();
