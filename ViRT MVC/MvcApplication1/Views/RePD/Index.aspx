@@ -10,6 +10,10 @@
             width: 100%;
             height: 700px;
         }
+        #PerformanceDiv {
+            width: 100%;
+            height: 700px;
+        }
         </style>
     <script>
         $(document).ready(function () {
