@@ -19,6 +19,12 @@ namespace MvcApplication1.Controllers
             DataTable MSRreliabilityChart = reliability.ReliaiblityDailyTable(Convert.ToDateTime(Request.QueryString["start"]));//Convert.ToDateTime(Request.QueryString["start"]));
             var json = JsonConvert.SerializeObject(MSRreliabilityChart, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             ViewBag.MSRreliabilityChart = json;
+
+            MSRperformance performance = new MSRperformance();
+            DataTable MSRPerfPercentileChart = performance.Percentile95Table(Convert.ToDateTime(Request.QueryString["start"]));
+            var perfJson = JsonConvert.SerializeObject(MSRPerfPercentileChart, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            ViewBag.MSRPerfPercentileChart = perfJson;
+
             return View();
         }
 
