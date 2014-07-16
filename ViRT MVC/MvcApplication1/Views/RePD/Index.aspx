@@ -10,6 +10,10 @@
             width: 100%;
             height: 700px;
         }
+        #PerformanceDiv {
+            width: 100%;
+            height: 700px;
+        }
         </style>
     <script>
         $(document).ready(function () {
@@ -156,7 +160,7 @@
                     var graph1 = new AmCharts.AmGraph();
                     graph1.type = "line";
                     graph1.valueField = propertyName;
-                    graph1.balloonText = "<b><span style='font-size:14px;'>[[title]]</span></b><br />[[category]]<br /><span style='font-size:14px;'>Reliability: [[value]]</span>";
+                    graph1.balloonText = "<b><span style='font-size:14px;'>[[title]]</span></b><br />[[category]]<br /><span style='font-size:14px;'>Milliseconds: [[value]]</span>";
                     graph1.title = "ReliabilitY";
                     graph1.bullet = bullets[i];
                     graph1.bulletSize = 10;
