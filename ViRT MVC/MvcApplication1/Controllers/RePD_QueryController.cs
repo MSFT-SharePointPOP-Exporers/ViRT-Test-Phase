@@ -14,8 +14,7 @@ namespace MvcApplication1.Controllers
     public class RePD_QueryController : Controller
     {
         MSRreliability rel = new MSRreliability();
-        MSRperformance perf = new MSRperformance();
-        DateTime start;
+        //MSRperformance perf = new MSRperformance();
 
         public decimal getRange()
         {
@@ -42,9 +41,10 @@ namespace MvcApplication1.Controllers
             return "testetstt";
         }
 
-        public int getLatency()
+        public DateTime getLatency()
         {
-            return perf.Percentile95th(Convert.ToDateTime(Request.QueryString["start"]));
+            //return perf.Percentile95th(Convert.ToDateTime(Request.QueryString["start"]))
+             return Convert.ToDateTime(Request.QueryString["start"]);
         }
     }
 }

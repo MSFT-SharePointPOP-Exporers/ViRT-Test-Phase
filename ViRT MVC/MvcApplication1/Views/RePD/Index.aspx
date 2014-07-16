@@ -15,68 +15,68 @@
         $(document).ready(function () {
             $("#rendering h1").append($.QueryString("team"));
 
-            $.ajax({
-                data: "start=" + sessionStorage["start"],
-                url: '<%= Url.Action("getReliability", "RePD_Query") %>',
-                success: function (data) {
-                    reliability = parseFloat(data);
-                    $(".reliability").append(reliability.toFixed(2) + "%");
-                    if (reliability > upper) {
-                        $(".reliability").addClass("green");
-                    } else if (reliability > lower && reliability < upper) {
-                        $(".reliability").addClass("yellow");
-                    } else if (reliability < lower) {
-                        $(".reliability").addClass("red");
+                $.ajax({
+                    data: "start=" + sessionStorage["start"],
+                    url: '<%= Url.Action("getReliability", "RePD_Query") %>',
+                    success: function (data) {
+                        reliability = parseFloat(data);
+                        $(".reliability").append(reliability.toFixed(2) + "%");
+                        if (reliability > upper) {
+                            $(".reliability").addClass("green");
+                        } else if (reliability > lower && reliability < upper) {
+                            $(".reliability").addClass("yellow");
+                        } else if (reliability < lower) {
+                            $(".reliability").addClass("red");
+                        }
                     }
-                }
-            });
+                });
 
-            $.ajax({
-                url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
-                success: function (data) {
-                    $(".performance").append(performance.toFixed(2) + "%");
-                    if (performance > upper) {
-                        $(".performance").addClass("green");
-                    } else if (performance > lower && performance < upper) {
-                        $(".performance").addClass("yellow");
-                    } else if (performance < lower) {
-                        $(".performance").addClass("red");
+                $.ajax({
+                    url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
+                    success: function (data) {
+                        $(".performance").append(performance.toFixed(2) + "%");
+                        if (performance > upper) {
+                            $(".performance").addClass("green");
+                        } else if (performance > lower && performance < upper) {
+                            $(".performance").addClass("yellow");
+                        } else if (performance < lower) {
+                            $(".performance").addClass("red");
+                        }
                     }
-                }
-            });
+                });
 
-            $.ajax({
-                url: '<%= Url.Action("getQoS", "RePD_Query") %>',
-                success: function (data) {
-                    $(".qos").append(QoS.toFixed(2) + "%");
-                    if (QoS > upper) {
-                        $(".qos").addClass("green");
-                    } else if (QoS > lower && QoS < upper) {
-                        $(".qos").addClass("yellow");
-                    } else if (QoS < lower) {
-                        $(".qos").addClass("red");
+                $.ajax({
+                    data: "start=" + sessionStorage["start"],
+                    url: '<%= Url.Action("getQoS", "RePD_Query") %>',
+                    success: function (data) {
+                        $(".qos").append(QoS.toFixed(2) + "%");
+                        if (QoS > upper) {
+                            $(".qos").addClass("green");
+                        } else if (QoS > lower && QoS < upper) {
+                            $(".qos").addClass("yellow");
+                        } else if (QoS < lower) {
+                            $(".qos").addClass("red");
+                        }
                     }
-                }
             });
 
             //It just so happens that it works. But fix it.
-            $.ajax({
-                url: '<%= Url.Action("getLatency", "RePD_Query") %>',
-                data: "start=" + sessionStorage["start"],
-                success: function (data) {
-                    latency = parseInt(data);
-                    $(".latency").append(latency + " ms");
-                    if (latency > upper) {
-                        $(".latency").addClass("green");
-                    } else if (latency > lower && latency < upper) {
-                        $(".latency").addClass("yellow");
-                    } else if (latency < lower) {
-                        $(".latency").addClass("red");
-                    }
-                }
-            });
-
-
+           // $.ajax({
+            //    data: "start=" + sessionStorage["start"],
+             //   url: '<%= Url.Action("getQoS", "RePD_Query") %>',
+            //    success: function (data) {
+             //       console.log(data);
+                    //latency = parseInt(data);
+                    //$(".latency").append(latency + " ms");
+                   // if (latency > upper) {
+                   //     $(".latency").addClass("green");
+                   // } else if (latency > lower && latency < upper) {
+                   //     $(".latency").addClass("yellow");
+                   // } else if (latency < lower) {
+                  //      $(".latency").addClass("red");
+                   // }
+            //    }
+           // });
         });
     </script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
