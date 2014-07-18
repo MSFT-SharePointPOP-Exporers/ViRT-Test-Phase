@@ -272,6 +272,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\foundation\_settings.scss" />
+    <None Include="Properties\PublishProfiles\ViRT.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\images\arrowDown.gif" />
     <Content Include="Images\images\arrowUp.gif" />
@@ -347,7 +348,9 @@
     <Content Include="Views\Home\PercentData.aspx" />
     <Content Include="Views\Home\RawData.aspx" />
     <Content Include="Views\RePD\Index.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
