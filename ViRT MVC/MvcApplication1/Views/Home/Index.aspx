@@ -63,7 +63,7 @@ World Heat Map
 
 				map.areasSettings = {
 					unlistedAreasColor: "#FFFFFF",
-					unlistedAreasAlpha: 0.1
+					unlistedAreasAlpha: 0.1,
 				};
 				map.imagesSettings = {
 					alpha: 0.6
@@ -86,11 +86,12 @@ World Heat Map
 					dataProvider.images.push({
 						label: id,
 						labelPosition: "middle",
-						labelShiftX: -15,
-						labelShiftY: -17,
+						labelShiftX: -14,
+						labelShiftY: -15,
 						type: "circle",
-						percentWidth: 2,
-						percentHeight: 2,
+						width: 27,
+						height: 27,
+					    labelFontSize: 10,
 						color: dataItem.color,
 						longitude: latlong[id].longitude,
 						latitude: latlong[id].latitude,
@@ -106,12 +107,23 @@ World Heat Map
 			});
 		</script>
     </div>
-    <div id ="legendBar" class="small-12 medium-12 large-12 columns">
-        <h1>Legend Bar</h1>
-          <a href="#" class="button [tiny small large] green">100-99.9</a>
-          <a href="#" class="button [tiny small large] yellow">99.9-99.0</a>
-          <a href="#" class="button [tiny small large] red1">99.0-95.0</a>
-           <a href="#" class="button [tiny small large] red2">95.0-85.0</a>
-           <a href="#" class="button [tiny small large] red3">85.0-0.0</a>
+    <div id="legendBar" class="small-12 medium-12 large-12 columns">
+        <ul class="small-block-grid-5 medium-block-grid-5 large-block-grid-5">
+            <li>
+                <div class="green legend">100.00-99.90</div>
+            </li>
+            <li>
+                <div class="yellow legend">99.90-99.00</div>
+            </li>
+            <li>
+                <div class="red1 legend">99.00-95.00</div>
+            </li>
+            <li>
+                <div class="red2 legend">95.00-85.00</div>
+            </li>
+            <li>
+                <div class="red3 legend">85.00-0.00</div>
+            </li>
+        </ul>
     </div>
 </asp:Content>

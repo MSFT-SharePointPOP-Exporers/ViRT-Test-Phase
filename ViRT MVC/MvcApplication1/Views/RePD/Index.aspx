@@ -9,6 +9,7 @@
     #chartdiv {
             width: 100%;
             height: 700px;
+            margin-bottom:8%;
         }
         #PerformanceDiv {
             width: 100%;
@@ -23,13 +24,13 @@
                     data: "start=" + sessionStorage["start"],
                     url: '<%= Url.Action("getReliability", "RePD_Query") %>',
                     success: function (data) {
-                        reliability = parseFloat(data);
-                        $(".reliability").append(reliability.toFixed(2) + "%");
+                        reliability_val = parseFloat(data);
+                        $(".reliability").append(reliability_val.toFixed(2) + "%");
                         if (reliability > upper) {
                             $(".reliability").addClass("green");
-                        } else if (reliability > lower && reliability < upper) {
+                        } else if (reliability_val > lower && reliability_val < upper) {
                             $(".reliability").addClass("yellow");
-                        } else if (reliability < lower) {
+                        } else if (reliability_val < lower) {
                             $(".reliability").addClass("red");
                         }
                     }
@@ -38,12 +39,12 @@
                 $.ajax({
                     url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
                     success: function (data) {
-                        $(".performance").append(performance.toFixed(2) + "%");
-                        if (performance > upper) {
+                        $(".performance").append(performance_val.toFixed(2) + "%");
+                        if (performance_val > upper) {
                             $(".performance").addClass("green");
-                        } else if (performance > lower && performance < upper) {
+                        } else if (performance_val > lower && performance_val < upper) {
                             $(".performance").addClass("yellow");
-                        } else if (performance < lower) {
+                        } else if (performance_val < lower) {
                             $(".performance").addClass("red");
                         }
                     }
@@ -53,34 +54,34 @@
                     data: "start=" + sessionStorage["start"],
                     url: '<%= Url.Action("getQoS", "RePD_Query") %>',
                     success: function (data) {
-                        $(".qos").append(QoS.toFixed(2) + "%");
-                        if (QoS > upper) {
+                        $(".qos").append(QoS_val.toFixed(2) + "%");
+                        if (QoS_val > upper) {
                             $(".qos").addClass("green");
-                        } else if (QoS > lower && QoS < upper) {
+                        } else if (QoS_val > lower && QoS_val < upper) {
                             $(".qos").addClass("yellow");
-                        } else if (QoS < lower) {
+                        } else if (QoS_val < lower) {
                             $(".qos").addClass("red");
                         }
                     }
             });
 
             //It just so happens that it works. But fix it.
-           // $.ajax({
-            //    data: "start=" + sessionStorage["start"],
-             //   url: '<%= Url.Action("getQoS", "RePD_Query") %>',
-            //    success: function (data) {
-             //       console.log(data);
-                    //latency = parseInt(data);
-                    //$(".latency").append(latency + " ms");
-                   // if (latency > upper) {
-                   //     $(".latency").addClass("green");
-                   // } else if (latency > lower && latency < upper) {
-                   //     $(".latency").addClass("yellow");
-                   // } else if (latency < lower) {
-                  //      $(".latency").addClass("red");
-                   // }
-            //    }
-           // });
+            $.ajax({
+              data: "start=" + sessionStorage["start"],
+              url: '<%= Url.Action("getLatency", "RePD_Query") %>',
+              success: function (data) {
+                    console.log(data);
+                    latency = parseInt(data);
+                    $(".latency").append(latency + " ms");
+                    if (latency > upper) {
+                    $(".latency").addClass("green");
+                   } else if (latency > lower && latency < upper) {
+                        $(".latency").addClass("yellow");
+                      } else if (latency < lower) {
+                        $(".latency").addClass("red");
+                    }
+               }
+            });
         });
     </script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>

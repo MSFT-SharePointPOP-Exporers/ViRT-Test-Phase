@@ -1,4 +1,6 @@
-﻿    html {
+﻿    /*Default Styles*/
+
+    html {
         height:100%;
         margin:0;
         padding:0;
@@ -10,12 +12,92 @@
         background-color: #0F0F0F;
     }
 
+    h1 {
+        text-align:center;
+        margin-bottom:30px;
+        font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+
+    h1, h2 {
+        color:#e4e4e4;
+    }
+
     p { 
         color:#e1e1e1;
-    }                         
+    }
+
+    table {
+        width:100%;
+        background:none;
+    }
+
+    td {
+        font-size: 0.95em;
+    }
+
+    td, label {
+        color:#e4e4e4;
+    }
+
+    table,tr,tbody, td {
+        border:none;
+    }
+
+    select {
+        width:inherit;
+    }
+
+    /* Color Scheme for Legend Bar and Data Center Heat Map */
+   
+    .green {
+		background-color: #43ac6a;
+        color: #000000;
+	}
+
+	.yellow {
+		background-color: #ffff51;
+        color: #000000;
+	}
+
+	.red1 {
+		background-color: #c52e2e;
+        color:#ffffff;
+	}
+
+	.red2 {
+		background-color:#4e1010;
+		color:#ffffff;
+	}
+
+	.red3 {
+		background-color: #330000;
+		color:#ffffff;
+	}
+
+    /* Top/Navigation Bar */
+    
+    .top-bar {
+        background-color:#1e1e1e;
+    }
+
+    .top-bar-section .right li .dropdown {
+        z-index:1000;
+    }
+
+    .breadcrumbs {
+        border:none;
+        padding:0.98em 0.875rem 0.5625rem;
+        background:none; 
+    }
+
+    .breadcrumbs > *.current {
+        color: #E1E1E1;
+    }
+    
+    /* Pipeline Bar */                         
 
     #pipelines {
-        background-color: #FF99CC;
+        background-color: #0F0F0F;
         height: 100%;
         padding: 0;
         padding-top: 60px;
@@ -28,49 +110,23 @@
 
     #pipelines ul {
         padding:0;
+        background-color:#1E1E1E;
     }
 
+    /* Overview Bar */
+
     #overviewbar {
-        background-color:#a30b71;
+        background-color:#1E1E1E;
         height: 100%;
         padding: 60px 2% 0px 2%;
         float: left;
     }
 
-    .graph_header {
-        text-align:center;
-    }
-
     #overviewbar h1 {
         font-size: 25px;
         margin-bottom: 30%;
+        color:#e4e4e4;
         font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
-    }
-
-    #PercentDataLink {
-        text-align:center;
-    }
-
-    table {
-        width:100%;
-        background:none;
-    }
-
-    td {
-        font-size: 0.95em;
-    }
-
-    table,tr,tbody, td {
-        border:none;
-    }
-
-    .first {
-        font-size: 1.2em;
-        margin-bottom: 18%;
-    }
-    
-    .top-bar-section .right li .dropdown {
-        z-index:1000;
     }
 
     .overview_component {
@@ -84,79 +140,43 @@
         margin-bottom: 15%;
     }
 
+    /* Rendering: The right side of the dashboard*/
+
     #rendering {
-        background-color:#0f0f0f;
+        background-color: #0F0F0F;
         height: 100%;
         padding-top: 60px;
         padding-left: 0;
+        padding-right:0;
         float: left;
         -moz-box-shadow:    inset 0 0 10px #000000;
         -webkit-box-shadow: inset 0 0 10px #000000;
         box-shadow:         inset 0 0 10px #000000;
-    }
-
-    .breadcrumbs {
-        border:none;
-        padding:0.98em 0.875rem 0.5625rem;
-        background:none; 
-    }
-
-    .breadcrumbs > *.current {
-        color: #E1E1E1;
-    }
     
-    h1 {
-        text-align:center;
-        margin-bottom:30px;
-        font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
-    }
+}
+
+    
+    /* Legend Bar */
 
     #legendBar {
-        background-color: #FF00AE;
+        background-color: #0F0F0F;
         bottom: 0;
-        height: 11%;
-        padding:0.5%;
+        padding: 0 30.5%;
+        position:relative;
         text-align:center;
+        margin-top: 3%;
+}
+    .legend {
+        font-size:0.73em;
+        height:auto;
     }
 
-    #legendBar h1 {
-        font-size: 1.0em;
-        margin-bottom:10px;
-       font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
-    }
-    
-    .button {
-        color:black;
+    #legendBar li {
+        padding: 0px;
+        margin: 0px;
     }
 
-    
-
-	.green {
-		background-color: #43ac6a;
-	}
-
-	.yellow {
-		background-color: #ffff51;
-	}
-
-	.red1 {
-		background-color: #c52e2e;
-        color:#ffffff;
-	}
-
-	.red2 {
-		background-color:#4e1010;
-		color:white;
-	}
-
-	.red3 {
-		background-color: #330000;
-		color:white;
-	}
-
-    select {
-        width:inherit;
-    }
+   /* Date Selectors */
 
     #dates {
         float: right;
@@ -168,10 +188,16 @@
         z-index:100;
     }
 
+     #dates label {
+        color:#e4e4e4;
+    }
+
     #small_dates label{
-        color:#ebebeb;
+        color:#e4e4e4;
         font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
     }
+
+    /* Charts and Graphs */
 
     #chartdiv {
         width: 95%;
@@ -179,6 +205,12 @@
         overflow: hidden;
         margin-top: 1%;
     }
+
+     .graph_header {
+        text-align:center;
+    }
+
+    /* Dropdowns for Datacenters, Networks, and Farms seen above chart*/
 
     #selectors {
         margin-top:5.5%;
@@ -193,6 +225,8 @@
         margin: 0 4%;
     }
 
+    /* Loading Screen */
+
     	#loading {
 		display: none;
 		z-index: 100;
@@ -203,34 +237,42 @@
 		background-color: rgba(0, 0, 0, 0.93);
 	}
 
-	#loading h1 {
-		margin-bottom: 1%;
-        margin-top: 18%;
-        font-family: "Segoe WP",Verdana,Helvetica,sans-serif;
-	}
+	    #loading h1 {
+		    margin-bottom: 1%;
+            margin-top: 18%;
+            font-family: "Segoe WP",Verdana,Helvetica,sans-serif;
+	    }
 
 	#loading img {
-		width:100px;
-		height:100px;
+		width:48px;
+		height:48px;
 		margin:0 auto;
 	}
 
+
+     /* max-width 640px, mobile-only styles*/
+
     @media only screen and (max-width: 40em) {
-            #overviewbar{
-                padding: 12% 12% 0px 12%;
-                height:initial;
-            }
+        
+        #legendBar {
+            padding: 0 12.5%;
+        }           
+        
+        /* Overview Bar Mobile View */
 
-           #overviewbar h1{
-               margin-bottom: 20%;
+        #overviewbar{
+            padding: 12% 12% 0px 12%;
+            height:initial;
+        }
 
-           }
-          .overview_component,.overview_percent { 
-              font-size:1.1em;
-              margin-bottom: 6%;
-          }
+        #overviewbar h1{
+            margin-bottom: 20%;
 
-
-    } /* max-width 640px, mobile-only styles*/
+        }
+        .overview_component,.overview_percent { 
+            font-size:1.1em;
+            margin-bottom: 6%;
+        } 
+    }
 
 

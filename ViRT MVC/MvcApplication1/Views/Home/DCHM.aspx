@@ -19,6 +19,7 @@
                     url: '<%= Url.Action("getNetworkFarm", "ViRT_Query") %>',
                     dataType: "json",
                     success: function (data) {
+                        console.log(data);
                         $(".dchm").append('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">');
                         if (data != null) {
                             for (var x = 0; x < data.length; x++) {
@@ -64,5 +65,14 @@
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
    <div class = "dchm">
+    </div>
+        <div id ="legendBar" class="small-12 medium-12 large-12 columns">
+        <ul class="small-block-grid-5 medium-block-grid-5 large-block-grid-5">
+            <li><div class="green legend">100.00-99.90</div></li>
+            <li><div class="yellow legend">99.90-99.00</div></li>
+            <li><div class="red1 legend">99.00-95.00</div></li>
+            <li><div class="red2 legend">95.00-85.00</div></li>
+            <li><div class="red3 legend">85.00-0.00</div></li>
+        </ul>
     </div>
 </asp:Content>

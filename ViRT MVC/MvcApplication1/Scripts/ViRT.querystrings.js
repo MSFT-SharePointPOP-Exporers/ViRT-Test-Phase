@@ -94,25 +94,16 @@ function setDatacenter(id) {
 }
 
 /*
-    Checks the querystring for datacenter, network, and farm values, then 
-    appends new breadcrumbs to .breadcrumbs depending on their values.
+    CHANGE DESCRIPTIONS UJEFJ@#QR@#    
 */
 function setBreadcrumbs() {
-    if (sessionStorage["datacen"] != "All" && sessionStorage["network"] != -1 && sessionStorage["farm"] != -1) {
-        $(".breadcrumbs").append("<li onclick='setHomeDefaults()'><a href='../Home'>Home</a></li>");
-		$(".breadcrumbs").append("<li><a href='../Home/DCHM'>Datacenter " + sessionStorage["datacen"] + "</a></li>");
-		$(".breadcrumbs").append("<li><a href='../Home/DCHM'>Network " + sessionStorage["network"] + "</a></li>");
-		$(".breadcrumbs").append("<li class='current'>Farm " + sessionStorage["farm"] + "</li>");
-    } else if (sessionStorage["datacen"] != "All" && sessionStorage["network"] != -1 && sessionStorage["farm"] == -1) {
-        $(".breadcrumbs").append("<li onclick='setHomeDefaults()'><a href='../Home'>Home</a></li>");
-		$(".breadcrumbs").append("<li><a href='../Home/DCHM'>Datacenter " + sessionStorage["datacen"] + "</a></li>");
-		$(".breadcrumbs").append("<li class='current'>Network " + sessionStorage["network"] + "</li>");
-	} else if (sessionStorage["datacen"] != "All" && sessionStorage["network"] == -1 && sessionStorage["farm"] == -1) {
-	    $(".breadcrumbs").append("<li onclick='setHomeDefaults()'><a href='../Home'>Home</a></li>");
-	    $(".breadcrumbs").append("<li class='current'>Datacenter " + sessionStorage["datacen"] + "</li>");
-	} else {
-	    $(".breadcrumbs").append("<li class='current'>Home</li>");
-	}
+    if (sessionStorage["datacen"] != "All") {
+        $(".breadcrumbs").append("<li><a href = '../Home/'>Home</a></li>");
+        $(".breadcrumbs").append("<li><a href = '../RePD/'>MSR Report</a></li>");
+    } else  if (sessionStorage["datacen"] == "All") {
+        $(".breadcrumbs").append("<li class='current'>Home</li>");
+        $(".breadcrumbs").append("<li><a href = '../RePD/'>MSR Report</a></li>");
+    }
 }
 
 /*

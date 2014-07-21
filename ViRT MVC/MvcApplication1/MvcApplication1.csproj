@@ -293,6 +293,8 @@
     <Content Include="Images\images\plus.gif" />
     <Content Include="Images\images\xIcon.gif" />
     <Content Include="Images\images\xIconH.gif" />
+    <Content Include="Images\image_692757.gif" />
+    <Content Include="Images\loadinfo.net.gif" />
     <Content Include="Images\outlets.png" />
     <Content Include="Scripts\amcharts\amcharts.js" />
     <Content Include="Scripts\amcharts\ammap.js" />
