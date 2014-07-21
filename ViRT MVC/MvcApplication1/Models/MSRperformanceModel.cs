@@ -10,7 +10,7 @@ namespace MvcApplication1.Models
 {
 	class MSRperformance
 	{
-		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
+		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRTConnection"].ConnectionString);
 
 		/// <summary>
 		/// Empty constructor
