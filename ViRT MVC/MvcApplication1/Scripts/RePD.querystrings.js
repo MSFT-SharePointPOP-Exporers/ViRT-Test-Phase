@@ -1,9 +1,9 @@
 ﻿var date = new Date();
 var upper = 99.9057654764;
 var lower = 91.054;
-var reliability;
-var performance = 99.68764574574847;
-var QoS = 99.186453654363;
+var reliability_val;
+var performance_val = 99.68764574574847;
+var QoS_val = 99.186453654363;
 var latency = 127;
 
 
@@ -65,6 +65,8 @@ $(document).ready(function () {
 
     if (sessionStorage["team"] != "Authentication") {
         $("#overallstats").hide();
+        $("#chartdiv").hide();
+        $("#PerformanceDiv").hide();
         $("#rendering").append("<h2>Data Unavailable<br/>:(</h2>");
     }
 });

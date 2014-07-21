@@ -13,8 +13,6 @@
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/ViRT_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
-      <link href="../../Content/Dark%20Theme.css" rel="stylesheet" />
-
       <script type="text/javascript">
           $(document).ready(function () {
               
@@ -44,16 +42,15 @@
                   url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
-                      console.log(data);
                       for (var x = 0; x < data.length; x++) {
                           if (data[x].Component.indexOf(sessionStorage["pipeline"]) > -1 && sessionStorage["pipeline"] != "Overview") {
-                              $("tbody").append("<tr>");
-                              $("tbody").append("<td class='overview_component first'>" + data[x].Component + "</td>");
-                              $("tbody").append("<td class='overview_percent first'><a href = '../Home/PercentData'>" + data[x].Percent + "%</a></td>");
-                              $("tbody").append("</tr>");
+                              $("#overviewbar h1").append(data[x].Component + "<br><a href='../Home/PercentData'>" + data[x].Percent + "%</a>");
                           }
-                       } 
-                    }
+                      }
+                      if (sessionStorage["pipeline"] == "Overview") {
+                        $("#overviewbar h1").append("Overview");
+                      }
+                   }
               });
 
               $.ajax({
@@ -61,7 +58,6 @@
                   url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
-                      console.log(data);
                       for (var x = 0; x < data.length; x++) {
                           $("tbody").append("<tr>");
                           $("tbody").append("<td class='overview_component'>" + data[x].Component + "</td>");
@@ -73,10 +69,14 @@
 
 
               $(".button").click(function () {
-                  $("#loading").fadeIn();
-                  sessionStorage["start"] = $(".from").val();
-                  sessionStorage["end"] = $(".to").val();
-                  updateQueryString();
+                  if ($(".from").val() != sessionStorage["start"] || $(".to").val() != sessionStorage["end"]) {
+                      $("#loading").fadeIn();
+                      sessionStorage["start"] = $(".from").val();
+                      sessionStorage["end"] = $(".to").val();
+                      updateQueryString();
+                  } else {
+                      alert("Please change the dates before applying date filters.");
+                  }
               });
               $("#FeaturedContent_Datacenter").change(function () {
                   sessionStorage["datacen"] = $("#FeaturedContent_Datacenter").val().toString();
@@ -109,7 +109,6 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
-          <li><a href ="../RePD/Index">MSR Report</a></li>
           <li class="has-dropdown show-for-medium-down">
             <a href="#">Change Pipeline</a>
             <ul class="dropdown pipelines">
@@ -132,7 +131,7 @@
       </ul>
     </div>
     <div id="overviewbar" class="small-12 medium-3 large-2 columns">
-        <h1>Overview Bar</h1>
+        <h1></h1>
 	    <table>
 		    <tbody>
 		    </tbody>
@@ -151,7 +150,8 @@
     </div>
       <div id="loading">
 	        <h1>Loading....</h1>
-	        <img src = "http://www.projectalexa.com/static/img/large-ajax-loader.gif" alt ="">
+           <!-- <img src="http://www.newmammal.com/wp-content/uploads/2011/09/Funky-Loading-Gif-P-013.gif" alt="loading"/>-->
+          <img src="../../Images/loadinfo.net.gif" />
 	    </div>
   </body>
 </html>
