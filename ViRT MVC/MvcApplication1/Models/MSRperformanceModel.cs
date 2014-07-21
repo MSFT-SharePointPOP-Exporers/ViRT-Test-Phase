@@ -12,41 +12,83 @@ namespace MvcApplication1.Models
 	{
 		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
 
+		/// <summary>
+		/// Empty constructor
+		/// </summary>
 		public MSRperformance()
 		{
 
 		}
 
-		/*Perfomance does not work yet! Need data stuff!
-		public decimal MonthPerformancePercent(DateTime monthYear)
+		/// <summary>
+		/// Calculate the percentage of performance for the month
+		/// </summary>
+		/// <param name="monthYear">Month to get percent</param>
+		/// <returns>Percent Perfomance</returns>
+		public decimal PerformancePercent(DateTime monthYear)
 		{
 			dbConnect.Open();
 			DateTime start = monthYear;
 			DateTime end = (monthYear.AddMonths(1)).AddDays(-1);
 
-			DataTable countTotal = GetMonitoredScopes(start, end);
+			DataTable raw = GetPercent(start, end);
+
+			if (raw.Rows[0].IsNull(0)) return 0;
 
 			dbConnect.Close();
-			return 0;
+			return (decimal)raw.Rows[0][0];
 		}
 
-		private DataTable GetMonitoredScopes(DateTime start, DateTime end)
+		/// <summary>
+		/// Queries DB and calculates the percent
+		/// </summary>
+		/// <param name="start">Start date for pulling data</param>
+		/// <param name="end">End fate for pulling data</param>
+		/// <returns></returns>
+		private DataTable GetPercent(DateTime start, DateTime end)
 		{
-			String queryCountTotal = "SELECT LogDate AS Date, SampleCount, SumExecutionTimeMilliseconds FROM Probes WHERE LogDate BETWEEN" +
+			String query = "SELECT ((1 - CAST(CAST(SUM(TotalMonitoredScopesOverThreshold) AS decimal(38,0)) / SUM(TotalMonitoredScopes) AS decimal(7,4))) *100) FROM Prod_PerformanceRaw WHERE Date BETWEEN '" +
 				start.ToString() + "' AND '" + end.ToString() + "'";
-			SqlCommand queryCommand = new SqlCommand(queryCountTotal, dbConnect);
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
 			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable countTotalTable = new DataTable();
-			countTotalTable.Load(queryCommandReader);
+			DataTable table = new DataTable();
+			table.Load(queryCommandReader);
 
-			return countTotalTable;
+			return table;
 		}
-		
-		private decimal CalculateMonitored()
+
+		/// <summary>
+		/// Retrieves a table of percentages
+		/// </summary>
+		/// <param name="monthYear">Month to pull data for</param>
+		/// <returns>DataTable with performance percent daily for a month</returns>
+		public DataTable PerformancePercentDaily(DateTime monthYear)
 		{
-			return 0;
+			dbConnect.Open();
+			DateTime start = monthYear;
+			DateTime end = (monthYear.AddMonths(1)).AddDays(-1);
+			DataTable table = GetDays(start, end);
+			dbConnect.Close();
+			return table;
 		}
-		*/
+
+		/// <summary>
+		/// Gets the data for the days
+		/// </summary>
+		/// <param name="start">Start date</param>
+		/// <param name="end">End Date</param>
+		/// <returns>DT with daily performance percents</returns>
+		private DataTable GetDays(DateTime start, DateTime end)
+		{
+			String query = "SELECT CAST(Date AS DATE) AS Date, ((1 - CAST(CAST(SUM(TotalMonitoredScopesOverThreshold) AS decimal(38,0)) / SUM(TotalMonitoredScopes) AS decimal(7,4))) *100)  AS Percentage " +
+				"FROM Prod_PerformanceRaw WHERE Date BETWEEN '" + start.ToString() + "' AND '" + end.ToString() + "' GROUP BY CAST(Date AS DATE) ORDER BY Date";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable table = new DataTable();
+			table.Load(queryCommandReader);
+
+			return table;
+		}
 
 		/// <summary>
 		/// Calculates the 95th percentile for SPClaimsCounterScope for a complete month
@@ -58,11 +100,8 @@ namespace MvcApplication1.Models
 			dbConnect.Open();
 			DateTime start = monthYear;
 			DateTime end = (monthYear.AddMonths(1)).AddDays(-1);
-
 			DataTable tileDaily = PercentileDailyTable(start, end);
 			int time = Calculate95th(tileDaily);
-			Console.WriteLine(time);
-
 			dbConnect.Close();
 			return time;
 		}
@@ -77,7 +116,6 @@ namespace MvcApplication1.Models
 		{
 			String query = "SELECT CAST(LogDate AS DATE) AS Date, SUM(SampleCount) AS SampleCount, SUM(SampleCount * ExecutionTimeMilliseconds_95) AS Sum95 FROM Prod_MonitoredScopes WHERE LogDate BETWEEN '" +
 				start.ToString() + "' AND '" + end.ToString() + "' AND MonitoredScopeName = 'SPClaimsCounterScope' " + "GROUP BY CAST(LogDate AS DATE) ORDER BY Date";
-			//Console.WriteLine(query);
 			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
 			//queryCommand.CommandTimeout = 1000;
 			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();

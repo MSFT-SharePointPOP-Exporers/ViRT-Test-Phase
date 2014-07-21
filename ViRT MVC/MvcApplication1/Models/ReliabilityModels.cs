@@ -763,11 +763,11 @@ namespace MvcApplication1.Models
 		}
 
 		/*
- * Changes the start and end date
- * 
- * @param pStart		New start date
- * @param pEnd			New end date
- */
+		 * Changes the start and end date
+		 * 
+		 * @param pStart		New start date
+		 * @param pEnd			New end date
+		 */
 		public void ChangeDate(DateTime pStart, DateTime pEnd)
 		{
 			start = pStart;
