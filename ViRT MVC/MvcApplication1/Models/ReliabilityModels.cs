@@ -16,15 +16,12 @@ namespace MvcApplication1.Models
 		private String pipeline;
 		private DateTime start;
 		private DateTime end;
-		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRT"].ConnectionString);
+		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRTConnection"].ConnectionString);
 		Random random = new Random();
 
-		/*
-		 * Default constructor
-		 * Used when a person first enters the page.
-		 * -1 refers to all "all networkId" and "all farmIDs)
-		 * dataCenter = "all" means every data center's data is queried.
-		 */
+		/// <summary>
+		/// Creates a Relaibility object with default values
+		/// </summary>
 		public Reliability()
 		{
 			dataCenter = "All";
@@ -37,15 +34,15 @@ namespace MvcApplication1.Models
 			//Time span is 7 days.
 		}
 
-		/*
-		 * Constructor which initizalizes all the values.
-		 * 
-		 * @param pDataCenter specified Data Center
-		 * @param pNetworkID specified Network ID
-		 * @param pPipeline specified pipeline
-		 * @param pStart start date in DateTime
-		 * @param pEnd end date in DateTime
-		 */
+		/// <summary>
+		/// Creates a Reliability object with all values initialized
+		/// </summary>
+		/// <param name="pDataCenter">Data Center</param>
+		/// <param name="pNetworkID">Network ID</param>
+		/// <param name="pFarmID">Farm ID</param>
+		/// <param name="pPipeline">Selected Pipeline</param>
+		/// <param name="pStart">Start Date</param>
+		/// <param name="pEnd">End Date</param>
 		public Reliability(String pDataCenter, int pNetworkID, int pFarmID, String pPipeline,
 			DateTime pStart, DateTime pEnd)
 		{
@@ -63,6 +60,12 @@ namespace MvcApplication1.Models
 		 * @param pComponent	Component which reliability is calculated
 		 * @return		A DataTable with the relailbity calculation of every every hour for the component
 		 */
+		/// <summary>
+		/// Calculates the reliability of a single component
+		/// Retrieves 
+		/// </summary>
+		/// <param name="pComponent"></param>
+		/// <returns></returns>
 		private DataTable CalculateComponent(String pComponent)
 		{
 			//get success and fail tags
@@ -395,7 +398,7 @@ namespace MvcApplication1.Models
 			return dt;
 		}
 
-		/* :D
+		/* 
 		 * Calculate all the percentages for a pipeline's components
 		 * 
 		 * @param pPipeline		The pipeline for all the components

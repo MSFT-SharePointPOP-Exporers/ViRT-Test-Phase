@@ -11,7 +11,7 @@ namespace MvcApplication1.Models
 	public class MSRreliability
     {
 		//Connection string for DB queries
-		private SqlConnection dbConnect = new SqlConnection("Data Source=FIDEL3127;Initial Catalog=VisDataTestCOSMOS;Integrated Security=True;");
+		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRTConnection"].ConnectionString);
 
 		/// <summary>
 		/// Constructor for a MSR_Reliability Object
