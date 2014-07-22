@@ -2,14 +2,14 @@
 var upper = 99.9057654764;
 var lower = 91.054;
 var reliability_val;
-var performance_val = 99.68764574574847;
+var performance_val;
 var QoS_val = 99.186453654363;
-var latency = 127;
+var latency;
 
 
 function setDefaults() {
     sessionStorage["team"] = "Authentication";
-    sessionStorage["start"] = new Date(date.getFullYear(),date.getMonth()-1, 1).toString("yyyy-MM-dd");
+    sessionStorage["month"] = new Date(date.getFullYear(),date.getMonth()-1, 1).toString("yyyy-MM-dd");
 
 }
 
@@ -17,17 +17,17 @@ function updateQueryString() {
     if (sessionStorage["team"] == undefined) {
         setDefaults();
     }
-    sessionStorage["query"] = "?team=" + sessionStorage["team"] + "&start=" + sessionStorage["start"];
+    sessionStorage["query"] = "?team=" + sessionStorage["team"] + "&month=" + sessionStorage["month"];
     window.location.search = sessionStorage["query"];
 }
 
 function setSessionStorage() {
     sessionStorage["team"] = $.QueryString("team");
-    sessionStorage["start"] = $.QueryString("start");
+    sessionStorage["month"] = $.QueryString("month");
 }
 
 function setFields() {
-    $(".month").val($.QueryString("start"));
+    $(".month").val($.QueryString("month"));
 }
 
 function setTeam(id) {
@@ -58,11 +58,6 @@ $(document).ready(function () {
         setSelectedTeam();
         setFields();
     }
-    $(".button").click(function () {
-        sessionStorage["start"] = $(".month").val();
-        updateQueryString();
-    });
-
     if (sessionStorage["team"] != "Authentication") {
         $("#overallstats").hide();
         $("#chartdiv").hide();
@@ -74,9 +69,10 @@ $(document).ready(function () {
 //Move Elsewhere!
 $(document).ready(function () {
     $('.month').datepicker({
-        defaultDate: sessionStorage["start"],
+        defaultDate: sessionStorage["month"],
         changeMonth: true,
         changeYear: true,
+        minDate: "-4M -0Y",
         maxDate: "-1M -0Y",
         showButtonPanel: true,
         dateFormat: 'yy-mm-dd',
@@ -84,6 +80,8 @@ $(document).ready(function () {
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(".month").val(new Date(year, month, 1).toString("yyyy-MM-dd"));
+            sessionStorage["month"] = $(".month").val();
+            updateQueryString();
         },
         beforeShow: function (input, inst) {
             var datestr;
