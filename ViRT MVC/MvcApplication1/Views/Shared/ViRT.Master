@@ -20,10 +20,6 @@
                   //$("#loading").fadeIn();
               });
 
-              $(window).load(function () {
-                  $("#loading").fadeOut("slow");
-              });
-
               $.ajax({
                   contentType: "application/json",
                   data: "",

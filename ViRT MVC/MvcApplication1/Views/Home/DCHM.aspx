@@ -4,22 +4,18 @@
     <link href="../../Content/DCHM.css" rel="stylesheet" />
     <script>
         $(document).ready(function () {
-            $(document).ajaxSend(function () {
+            $("button").click(function () {
                 $("#loading").fadeIn();
             });
 
-            $(document).ajaxComplete(function () {
-                $("#loading").fadeOut("slow");
-            });
-
             if (window.location.search != "") {
-                $("#rendering h1").append($.QueryString("datacen").substring(0, 3));
+                $("#rendering h1").append($.QueryString("datacen"));
+                $("#loading").fadeIn();
                 $.ajax({
                     data: sessionStorage["query"],
                     url: '<%= Url.Action("getNetworkFarm", "ViRT_Query") %>',
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
                         $(".dchm").append('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">');
                         if (data != null) {
                             for (var x = 0; x < data.length; x++) {
@@ -42,10 +38,13 @@
                                 }
                             }
                         }
+                    },
+                    complete: function (data) {
+                        //$("#loading").fadeOut("slow");
                     }
                 });
             }
-        });
+            });
     </script>
 </asp:Content>
 
