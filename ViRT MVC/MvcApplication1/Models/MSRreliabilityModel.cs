@@ -37,17 +37,16 @@ namespace MvcApplication1.Models
 			DateTime end = (monthYear.AddMonths(1)).AddDays(-1);
 
 			long successCount = CalculateTagTotal(successTag, start, end);
-			Console.WriteLine(successCount);
+			//Console.WriteLine(successCount);
 			long failureCount = CalculateTagTotal(failureTag, start, end);
-			Console.WriteLine(failureCount);
+			//Console.WriteLine(failureCount);
 			long userErrCount = CalculateTagTotal(userErrTag, start, end);
-			Console.WriteLine(userErrCount);
-
-			if (successCount + failureCount == 0) return 0;
-
-			decimal total = (decimal)(successCount + userErrCount) * 100 / (successCount + failureCount);
+			//Console.WriteLine(userErrCount);
 
 			dbConnect.Close();
+			if (successCount + failureCount == 0) return 0;
+
+			decimal total = (decimal)(successCount + userErrCount) * 100 / (successCount + failureCount + userErrCount);
 			return Math.Round(total, 4);
 		}
 
@@ -75,7 +74,7 @@ namespace MvcApplication1.Models
 		/// <returns>Total number of hits</returns>
 		private long CalculateTagTotal(String tag, DateTime start, DateTime end)
 		{
-			String sumQuery = "SELECT SUM(CAST(NumberOfHits AS BIGINT)) AS TokenIssuances FROM ProdDollar_TagAggregationCopy WHERE Tag = '" +
+			String sumQuery = "SELECT SUM(CAST(Hits AS BIGINT)) AS TokenIssuances FROM Prod_Reliability WHERE Tag = '" +
 				tag + "' AND Date BETWEEN '" + start.ToString() + "' AND '" + end.ToString() + "'";
 
 			SqlCommand queryCommand = new SqlCommand(sumQuery, dbConnect);
@@ -109,8 +108,7 @@ namespace MvcApplication1.Models
 			DataTable failureTable = CalculateDailyTagForMonth(failureTag, start, end);
 			DataTable userErrTable = CalculateDailyTagForMonth(userErrTag, start, end);
 
-			DataTable datePercent = CalculateDatePercent(successTable, failureTable, userErrTable, start, end
-);
+			DataTable datePercent = CalculateDatePercent(successTable, failureTable, userErrTable, start, end);
 			//End of method
 
 			dbConnect.Close();
@@ -126,7 +124,7 @@ namespace MvcApplication1.Models
 		/// <returns>Table with condensed Tag number of hits for a day</returns>
 		private DataTable CalculateDailyTagForMonth(String tag, DateTime start, DateTime end)
 		{
-			String hitDailyMonthCount = "SELECT Date, SUM(NumberOfHits) AS NumberOfHits FROM ProdDollar_TagAggregationCopy WHERE Tag = '" +
+			String hitDailyMonthCount = "SELECT Date, SUM(Hits) AS Hits FROM Prod_Reliability WHERE Tag = '" +
 				tag + "' AND Date BETWEEN '" + start.ToString() + "' AND '" + end.ToString() + "' GROUP BY Date";
 
 			SqlCommand queryCommand = new SqlCommand(hitDailyMonthCount, dbConnect);
@@ -153,19 +151,18 @@ namespace MvcApplication1.Models
 			datePercent.Columns.Add("Percent", typeof(decimal));
 			DataRow toAdd = datePercent.NewRow();
 
-			int succ = 0;
-			int fail = 0;
-			int erro = 0;
+			long succ = 0;
+			long fail = 0;
+			long erro = 0;
 
 			for (DateTime i = start; i <= end; i = i.AddDays(1))
 			{
-
 
 				for (int j = 0; j < successTable.Rows.Count; j++)
 				{
 					if ((DateTime)successTable.Rows[j]["Date"] == i)
 					{
-						succ = (int)successTable.Rows[j]["NumberOfHits"];
+						succ = (long)successTable.Rows[j]["Hits"];
 						//Console.WriteLine("succ " + succ);
 						j = successTable.Rows.Count;
 					}
@@ -174,7 +171,7 @@ namespace MvcApplication1.Models
 				{
 					if ((DateTime)failureTable.Rows[j]["Date"] == i)
 					{
-						fail = (int)failureTable.Rows[j]["NumberOfHits"];
+						fail = (long)failureTable.Rows[j]["Hits"];
 						//Console.WriteLine("fail " + fail);
 						j = successTable.Rows.Count;
 					}
@@ -183,7 +180,7 @@ namespace MvcApplication1.Models
 				{
 					if ((DateTime)userErrTable.Rows[j]["Date"] == i)
 					{
-						erro = (int)successTable.Rows[j]["NumberOfHits"];
+						erro = (long)successTable.Rows[j]["Hits"];
 						//Console.WriteLine("erro " + erro);
 						j = successTable.Rows.Count;
 					}
@@ -191,7 +188,7 @@ namespace MvcApplication1.Models
 
 				if (succ + fail != 0)
 				{
-					toAdd["Percent"] = Math.Round((decimal)(succ + erro) * 100 / (succ + fail), 4);
+					toAdd["Percent"] = Math.Round((decimal)(succ + erro) * 100 / (succ + fail + erro), 4);
 					toAdd["Date"] = i;
 					datePercent.Rows.Add(toAdd);
 				}

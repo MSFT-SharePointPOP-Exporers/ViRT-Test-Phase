@@ -36,7 +36,7 @@ namespace MvcApplication1.Controllers
 			{
 				world.ChangeDataCenter(dcs[i]);
 				temp["DataCenter"] = dcs[i];
-				temp["Percent"] = world.CalculatePipeOverview();
+				temp["Percent"] = world.CalculateWorldMapCircle();
 				dcPipeAverage.Rows.Add(temp);
 				temp = dcPipeAverage.NewRow();
 			}
@@ -65,7 +65,7 @@ namespace MvcApplication1.Controllers
         {
             Reliability paramsPercent = new Reliability(Request.QueryString["datacen"], Convert.ToInt32(Request.QueryString["network"]), Convert.ToInt32(Request.QueryString["farm"]), Request.QueryString["pipeline"], Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
-            DataTable percentTable = paramsPercent.PipelineCalculate(Request.QueryString["pipeline"]);
+            DataTable percentTable = paramsPercent.PipelineGraphTable(Request.QueryString["pipeline"]);
 
             var json = JsonConvert.SerializeObject(percentTable, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
@@ -84,7 +84,7 @@ namespace MvcApplication1.Controllers
 
             foreach (var compName in components)
             {
-                DataTable rawDataTable = rawData.RawDataTable(compName);
+                DataTable rawDataTable = rawData.RawDataGraphTable(compName);
                 allComponentsRawData.Add(rawDataTable);
             }
             var table = JsonConvert.SerializeObject(allComponentsRawData, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });

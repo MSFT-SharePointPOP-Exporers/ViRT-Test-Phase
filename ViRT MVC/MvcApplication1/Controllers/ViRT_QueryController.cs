@@ -25,7 +25,7 @@ namespace MvcApplication1.Controllers
         public string getOverview()
         {
             test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
-            return JsonConvert.SerializeObject(test.OverviewCalculate(Request.QueryString["pipeline"]));
+            return JsonConvert.SerializeObject(test.CalculateOverviewBar(Request.QueryString["pipeline"]));
         }
 
         public string getDatacenters()
