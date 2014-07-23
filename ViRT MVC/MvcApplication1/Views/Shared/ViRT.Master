@@ -17,7 +17,7 @@
           $(document).ready(function () {
               
               $(document).ajaxSend(function () {
-                  $("#loading").fadeIn();
+                  $("#loading").fadeIn();                                     
               });
 
               $(document).ajaxComplete(function () {
