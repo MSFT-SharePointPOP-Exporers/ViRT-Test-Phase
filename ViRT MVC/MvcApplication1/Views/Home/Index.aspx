@@ -60,7 +60,6 @@ World Heat Map
 				map = new AmCharts.AmMap();
 				map.pathToImages = "../../Images/images/";
 				map.panEventsEnabled = true;
-				map.dragMap = false;
 
 				map.areasSettings = {
 					unlistedAreasColor: "#FFFFFF",
