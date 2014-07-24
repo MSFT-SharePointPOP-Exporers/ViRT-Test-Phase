@@ -8,8 +8,10 @@
                 $("#loading").fadeIn();
             });
 
-            if (window.location.search != "") {
-                $("#rendering h1").append($.QueryString("datacen"));
+            if (window.location.search == "") {
+                updateQueryString();
+            } else  {
+                $("#rendering h1").text(sessionStorage["datacen"]);
                 $("#loading").fadeIn();
                 $.ajax({
                     data: sessionStorage["query"],

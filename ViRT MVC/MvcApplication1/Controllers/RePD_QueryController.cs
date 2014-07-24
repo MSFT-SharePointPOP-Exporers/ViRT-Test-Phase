@@ -36,9 +36,9 @@ namespace MvcApplication1.Controllers
             return perf.PerformancePercent(Convert.ToDateTime(Request.QueryString["month"]));
         }
 
-        public string getQOS()
+        public decimal getQOS()
         {
-            return "testetstt";
+            return 0;
         }
 
         public int getLatency()

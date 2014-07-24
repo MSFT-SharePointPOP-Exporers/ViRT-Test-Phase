@@ -201,6 +201,10 @@ overflow: hidden;
     
 }
 
+        .ui-datepicker, .ui-datepicker-title select,.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+        font-size: 0.875rem !important;
+    }
+
 
 
     #legend {
