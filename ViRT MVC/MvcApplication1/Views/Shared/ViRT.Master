@@ -58,7 +58,7 @@
               });
 
               $.ajax({
-                  data: "pipeline=" + sessionStorage["pipeline"],
+                  data: sessionStorage["query"],
                   url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
