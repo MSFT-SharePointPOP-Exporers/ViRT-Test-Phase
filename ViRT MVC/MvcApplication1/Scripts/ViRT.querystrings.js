@@ -128,8 +128,37 @@ function setNetwork(id) {
 	sessionStorage["network"] = id;
 	sessionStorage["farm"] = -1;
 	sessionStorage["changed"] = true;
-	window.location.href = "PercentData";
+	window.location.href = "../Home/PercentData";
 }
+
+$(".button").click(function () {
+    if (Date.parse($(".from").val()) != null && Date.parse($(".to").val()) != null) {
+        if ($(".from").val() != sessionStorage["start"] || $(".to").val() != sessionStorage["end"]) {
+            $("#loading").fadeIn();
+            sessionStorage["start"] = $(".from").val();
+            sessionStorage["end"] = $(".to").val();
+            updateQueryString();
+        }
+    } else {
+        alert("The format of the dates in the date filters is not correct. (Format: YYYY-MM-DD)");
+
+    }
+});
+
+$("#FeaturedContent_Datacenter").change(function () {
+    sessionStorage["datacen"] = $("#FeaturedContent_Datacenter").val().toString();
+    updateQueryString();
+});
+
+$("#FeaturedContent_Network").change(function () {
+    sessionStorage["network"] = $("#FeaturedContent_Network").val();
+    updateQueryString();
+});
+
+$("#FeaturedContent_Farm").change(function () {
+    sessionStorage["farm"] = $("#FeaturedContent_Farm").val();
+    updateQueryString();
+});
 
 /*
     This runs at the start of every page. First, it checks to see if there is a querystring.
