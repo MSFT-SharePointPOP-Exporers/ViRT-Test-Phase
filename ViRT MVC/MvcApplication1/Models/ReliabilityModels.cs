@@ -283,6 +283,26 @@ namespace MvcApplication1.Models
 					toAdd = retTable.NewRow();
 				}
 			}
+			else
+			{
+				ChangePipeline("UserLogin");
+				for (int i = 0; i < allNetsinDC.Rows.Count; i++)
+				{
+					//Console.WriteLine("Makes it here 1");
+					ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
+					//Console.WriteLine("Makes it here 2");
+					toAdd["NetworkID"] = networkID;
+					//Console.WriteLine("Makes it here 3");
+					toAdd["Percent"] = NetworkOnePercent();
+					//Console.WriteLine("Makes it here 4");
+					toAdd["Farms"] = CalculatePercentByFarms();
+					//Console.WriteLine("Makes it here 5");
+
+					retTable.Rows.Add(toAdd);
+					toAdd = retTable.NewRow();
+				}
+				ChangePipeline("Overview");
+			}
 
 			ChangeNetworkID(-1);
 			dbConnect.Close();
