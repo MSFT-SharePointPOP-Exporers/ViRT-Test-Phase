@@ -79,7 +79,7 @@ namespace MvcApplication1.Controllers
             Reliability rawData = new Reliability(Request.QueryString["datacen"], Convert.ToInt32(Request.QueryString["network"]), Convert.ToInt32(Request.QueryString["farm"]), Request.QueryString["pipeline"], Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
             rawData.ChangeDate(Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
-            String[] components = rawData.getComponents(Request.QueryString["pipeline"]);
+            String[] components = rawData.GetComponents(Request.QueryString["pipeline"]);
             List<DataTable> allComponentsRawData = new List<DataTable>();
 
             foreach (var compName in components)
