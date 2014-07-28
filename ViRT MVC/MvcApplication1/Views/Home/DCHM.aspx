@@ -3,7 +3,6 @@
 <asp:Content ID="Head" ContentPlaceHolderID="Head" runat="server">
     <link href="../../Content/DCHM.css" rel="stylesheet" />
     <script>
-        var dchmarr = [];
         $(document).ready(function () {
             $("button").click(function () {
                 $("#loading").fadeIn();

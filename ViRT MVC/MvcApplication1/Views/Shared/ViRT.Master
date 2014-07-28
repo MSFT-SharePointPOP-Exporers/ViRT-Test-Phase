@@ -14,10 +14,9 @@
     <%: Scripts.Render("~/bundles/ViRT_jqueryui") %>
     <%: Scripts.Render("~/bundles/modernizr") %>
       <script type="text/javascript">
-          var arr = [];
-          //document.getElementsById("pipelines").innerHTML = "hi";
-
           $(document).ready(function () {
+              var arr = [];
+
               $(document).ajaxSend(function () {
                   $("#loading").fadeIn();                                     
               });
@@ -47,7 +46,6 @@
                       arr = [];
                       for (var x = 0; x < data.length; x++) {
                           if (data[x].Component.indexOf(sessionStorage["pipeline"]) > -1 && sessionStorage["pipeline"] != "Overview") {
-                              //$("#overviewbar h1").append(data[x].Component + "<br><a href='../Home/PercentData'>" + data[x].Percent + "%</a>");
                               arr.push(data[x].Component + "<br><a href='../Home/PercentData'>" + data[x].Percent + "%</a>");
                           }
                       }

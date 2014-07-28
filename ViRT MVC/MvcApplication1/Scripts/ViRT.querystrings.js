@@ -8,7 +8,6 @@ function setDefaults() {
 	sessionStorage["datacen"] = "All";
 	sessionStorage["network"] = -1;
 	sessionStorage["farm"] = -1;
-	sessionStorage["changed"] = false;
 }
 
 /*
@@ -27,9 +26,6 @@ function setHomeDefaults() {
     Finally, set the window.location.search to the querystring.
 */
 function updateQueryString() {
-	//if (sessionStorage["start"] == undefined) {
-	//	setDefaults();
-	//}
 	sessionStorage["query"] = "?start=" + sessionStorage["start"] + "&end=" + sessionStorage["end"] + "&pipeline=" + sessionStorage["pipeline"] + "&datacen=" + sessionStorage["datacen"] + "&network=" + sessionStorage["network"] + "&farm=" + sessionStorage["farm"];
 	window.location.search = sessionStorage["query"];
 }
@@ -93,7 +89,8 @@ function setPipeline(id) {
 function setDatacenter(id) {
     sessionStorage["datacen"] = id;
     sessionStorage["changed"] = true;
-	window.location.href = "DCHM";
+    updateQueryString();
+	window.location.href = "../Home/DCHM";
 }
 
 /*
@@ -119,7 +116,7 @@ function setFarm(id) {
 	sessionStorage["farm"] = id;
 	sessionStorage["network"] = $("#" + id).parent().attr('id');
 	sessionStorage["changed"] = true;
-	window.location.href = "PercentData";
+	window.location.href = "../Home/PercentData";
 }
 
 /*
@@ -141,9 +138,10 @@ function setNetwork(id) {
 $(document).ready(function () {
     //$("#loading").fadeIn();
     $(document).foundation();
-    if (window.location.search == "" && sessionStorage["changed"] == false) {
-        console.log(sessionStorage["changed"]);
+    if (sessionStorage["changed"] == false || sessionStorage["query"] == undefined) {
         setDefaults();
+    } else if (sessionStorage["changed"] == "true" && window.location.search == "") {
+        updateQueryString();
     }
         setSessionStorage();
 		setFields();
