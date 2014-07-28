@@ -8,6 +8,7 @@ function setDefaults() {
 	sessionStorage["datacen"] = "All";
 	sessionStorage["network"] = -1;
 	sessionStorage["farm"] = -1;
+	sessionStorage["query"] = "start=" + sessionStorage["start"] + "&end=" + sessionStorage["end"] + "&pipeline=" + sessionStorage["pipeline"] + "&datacen=" + sessionStorage["datacen"] + "&network=" + sessionStorage["network"] + "&farm=" + sessionStorage["farm"];
 }
 
 /*
@@ -26,7 +27,7 @@ function setHomeDefaults() {
     Finally, set the window.location.search to the querystring.
 */
 function updateQueryString() {
-	sessionStorage["query"] = "?start=" + sessionStorage["start"] + "&end=" + sessionStorage["end"] + "&pipeline=" + sessionStorage["pipeline"] + "&datacen=" + sessionStorage["datacen"] + "&network=" + sessionStorage["network"] + "&farm=" + sessionStorage["farm"];
+	sessionStorage["query"] = "start=" + sessionStorage["start"] + "&end=" + sessionStorage["end"] + "&pipeline=" + sessionStorage["pipeline"] + "&datacen=" + sessionStorage["datacen"] + "&network=" + sessionStorage["network"] + "&farm=" + sessionStorage["farm"];
 	window.location.search = sessionStorage["query"];
 }
 

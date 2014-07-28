@@ -14,35 +14,30 @@ namespace MvcApplication1.Controllers
 {
     public class ViRT_QueryController : Controller
     {
-        Reliability test = new Reliability();
- 
+        Reliability test = new Reliability(); 
         public string getPipelines()
         {
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
             return JsonConvert.SerializeObject(test.GetAllPipelines());
         }
 
         public string getOverview()
-        {
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
+        {               
+            test.ChangeDate(Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
             return JsonConvert.SerializeObject(test.CalculateOverviewBar(Request.QueryString["pipeline"]));
         }
 
         public string getDatacenters()
         {
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
             return JsonConvert.SerializeObject(test.GetDataCenterLatLong());
         }
 
         public string getNetworks()
         {
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
             return JsonConvert.SerializeObject(test.GetAllNetworks());
         }
 
         public string getFarms()
         {
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
             return JsonConvert.SerializeObject(test.GetAllFarms());
         }
 
@@ -50,7 +45,7 @@ namespace MvcApplication1.Controllers
         {
             Reliability test = new Reliability();
             
-            test.ChangeDate(Convert.ToDateTime(Request.QueryString["?start"]), Convert.ToDateTime(Request.QueryString["end"]));
+            test.ChangeDate(Convert.ToDateTime(Request.QueryString["start"]), Convert.ToDateTime(Request.QueryString["end"]));
 
 			test.ChangeDataCenter(Request.QueryString["datacen"]);
 
