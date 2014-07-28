@@ -446,14 +446,6 @@ namespace MvcApplication1.Models
 			return tagTable;
 		}
 
-
-
-
-
-
-
-
-
 		/*
 		 * Retrieves the names of the components for a pipeline
 		 * 
@@ -525,32 +517,6 @@ namespace MvcApplication1.Models
 		}
 
 		/*
-		 * 
-		 * 
-		 * 
-		 */
-		public int[] GetAllFarmsInNetworkArray()
-		{
-			dbConnect.Open();
-			String query = "SELECT FarmId FROM NetworkIdFarmId WHERE NetworkId = " + networkID;
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			DataTable farmIDTable = new DataTable();
-			farmIDTable.Load(queryCommandReader);
-
-			int[] farmArray = new int[farmIDTable.Rows.Count];
-
-			for (int i = 0; i < farmIDTable.Rows.Count; i++)
-			{
-				farmArray[i] = (int)farmIDTable.Rows[i]["FarmId"];
-			}
-
-			dbConnect.Close();
-
-			return farmArray;
-		}
-
-		/*
 		 * Retrieves the datacenter with the lat and long
 		 * 
 		 * @return		DataTable with latitude and longitude
@@ -583,34 +549,6 @@ namespace MvcApplication1.Models
 			return networks;
 		}
 
-		/*
-		* Retrieves all the FarmID for the NetworkID
-		* 
-		* @return a DataTable of the FarmID's
-		*/
-		public DataTable getFarms(int NetworkID)
-		{
-			//dbConnect.Open();
-			//String query = "SELECT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
-			//SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			//SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-			//DataTable networks = new DataTable();
-			//networks.Load(queryCommandReader);
-			//dbConnect.Close();
-			DataTable farms = new DataTable();
-			DataColumn id = new DataColumn("FarmID", typeof(int));
-			DataColumn percent = new DataColumn("Percentage", typeof(double));
-			farms.Columns.Add(id);
-			farms.Columns.Add(percent);
-			for (int i = 0; i < random.Next(1, 30); i++)
-			{
-				DataRow newRow = farms.NewRow();
-				newRow["FarmID"] = random.Next(1000, 10000);
-				newRow["Percentage"] = Convert.ToDouble(String.Format("{0:0.0000}", random.NextDouble() * 100));
-				farms.Rows.Add(newRow);
-			}
-			return farms;
-		}
 
 
 
@@ -681,76 +619,6 @@ namespace MvcApplication1.Models
 		{
 			networkID = pNetworkID;
 			farmID = -1;
-		}
-
-		/*
-		 * Change the farmID
-		 * 
-		 * @param pFarmID		Desired new farmID
-		 */
-		public void ChangeFarmID(int pFarmID)
-		{
-			farmID = pFarmID;
-		}
-
-		/*
-		 * Change both the Data Center and NetworkId and make farm default
-		 * 
-		 * @param pDataCenter		New DataCenter
-		 * @param pNetworkID		New NetworkID
-		 */
-		public void ChangeDataCenterNetworkID(String pDataCenter, int pNetworkID)
-		{
-			dataCenter = pDataCenter;
-			networkID = pNetworkID;
-			farmID = -1;
-		}
-
-		/*
-		 * Changes the NetworkID and the FarmID
-		 * 
-		 * @param pNetworkID		New NetworkID
-		 * @param pFarmID			New FarmID
-		 */
-		public void ChangeNetworkIDFarmID(int pNetworkID, int pFarmID)
-		{
-			networkID = pNetworkID;
-			farmID = pFarmID;
-		}
-
-		/*
-		 * Change all location filters
-		 * 
-		 * @param pDataCenter		New DataCenter
-		 * @param pNetworkID		New NetworkID
-		 * @param pFarmID			New FarmID
-		 */
-		public void ChangeLocationFilter(String pDataCenter, int pNetworkID, int pFarmID)
-		{
-			dataCenter = pDataCenter;
-			networkID = pNetworkID;
-			farmID = pFarmID;
-		}
-
-		/*
-		 * Changes all filters
-		 * 
-		 * @param pDataCenter		New DataCenter
-		 * @param pNetworkID		New NetworkID
-		 * @param pFarmID			New FarmID
-		 * @param pPipeline			New Pipeline
-		 * @param pStart			New start time
-		 * @param pEnd				New End time
-		 */
-		public void ChangeAllFilters(String pDataCenter, int pNetworkID, int pFarmID, String pPipeline,
-			DateTime pStart, DateTime pEnd)
-		{
-			dataCenter = pDataCenter;
-			networkID = pNetworkID;
-			farmID = pFarmID;
-			pipeline = pPipeline;
-			start = pStart;
-			end = pEnd.AddDays(1);
 		}
 
 		/*
