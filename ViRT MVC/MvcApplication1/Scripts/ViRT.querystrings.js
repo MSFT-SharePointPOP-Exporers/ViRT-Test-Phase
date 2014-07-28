@@ -93,7 +93,7 @@ function setPipeline(id) {
 function setDatacenter(id) {
     sessionStorage["datacen"] = id;
     sessionStorage["changed"] = true;
-	window.location.href = "Home/DCHM";
+	window.location.href = "DCHM";
 }
 
 /*
@@ -141,7 +141,8 @@ function setNetwork(id) {
 $(document).ready(function () {
     //$("#loading").fadeIn();
     $(document).foundation();
-    if (window.location.search == "" && sessionStorage["changed"] != true) {
+    if (window.location.search == "" && sessionStorage["changed"] == false) {
+        console.log(sessionStorage["changed"]);
         setDefaults();
     }
         setSessionStorage();

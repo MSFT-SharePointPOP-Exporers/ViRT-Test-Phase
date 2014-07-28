@@ -136,12 +136,18 @@
     .overview_component {
         float:left;
         overflow:hidden;
-        margin-bottom: 15%;
+        color:#e1e1e1;
+        line-height: 2em;
     }
 
     .overview_percent {
         float:right;
-        margin-bottom: 15%;
+        color:#e1e1e1;
+        line-height: 2em;
+    }
+
+    table tr.even, table tr.alt, table tr:nth-of-type(even) {
+        background:none;
     }
 
     /* Rendering: The right side of the dashboard*/
