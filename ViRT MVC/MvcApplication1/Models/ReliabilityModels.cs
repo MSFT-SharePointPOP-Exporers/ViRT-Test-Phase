@@ -211,7 +211,7 @@ namespace MvcApplication1.Models
 						//Check if there are entries with the time i
 						if ((DateTime)datePercents[j].Rows[k]["Date"] == i)
 						{
-							toAdd[comps[j]] = datePercents[j].Rows[k]["Percent"];
+							toAdd[comps[j]] = datePercents[j].Rows[k]["Percentage"];
 						}
 					}
 				}
@@ -254,7 +254,7 @@ namespace MvcApplication1.Models
 			//Create a DataTable which has NetworkIDs, Percents (average of farms), and a DataTable of the Farms
 			DataTable retTable = new DataTable();
 			retTable.Columns.Add("NetworkID", typeof(int));
-			retTable.Columns.Add("Percent", typeof(decimal));
+			retTable.Columns.Add("Percentage", typeof(decimal));
 			retTable.Columns.Add("Farms", typeof(DataTable));
 
 			//DataRow to add to the return table
@@ -282,7 +282,7 @@ namespace MvcApplication1.Models
 			{
 				ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
 				toAdd["NetworkID"] = networkID;
-				toAdd["Percent"] = NetworkOnePercent(successTag, failureTag);
+				toAdd["Percentage"] = NetworkOnePercent(successTag, failureTag);
 				toAdd["Farms"] = CalculatePercentByFarms(successTag, failureTag);
 
 				retTable.Rows.Add(toAdd);
