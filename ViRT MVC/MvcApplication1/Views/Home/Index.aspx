@@ -84,7 +84,7 @@ World Heat Map
 					des = des.concat("</br></br><a href='#' id='" + dataItem.code.substring(0,3) + "' onclick='setDatacenter(this.id)'>Detailed Data Center View</a>");
 
 					dataProvider.images.push({
-						label: id,
+						label: id,                 
 						labelPosition: "middle",
 						labelShiftX: -14,
 						labelShiftY: -15,
