@@ -263,45 +263,30 @@ namespace MvcApplication1.Models
 			//All the NetworkIds in the current DataCenter
 			DataTable allNetsinDC = GetNetworks(dataCenter);
 
+			String[] tags;
 
 			if (pipeline != "Overview")
 			{
-
-				for (int i = 0; i < allNetsinDC.Rows.Count; i++)
-				{
-					//Console.WriteLine("Makes it here 1");
-					ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
-					//Console.WriteLine("Makes it here 2");
-					toAdd["NetworkID"] = networkID;
-					//Console.WriteLine("Makes it here 3");
-					toAdd["Percent"] = NetworkOnePercent();
-					//Console.WriteLine("Makes it here 4");
-					toAdd["Farms"] = CalculatePercentByFarms();
-					//Console.WriteLine("Makes it here 5");
-
-					retTable.Rows.Add(toAdd);
-					toAdd = retTable.NewRow();
-				}
+				tags = Tags(pipeline);
 			}
 			else
 			{
 				ChangePipeline("UserLogin");
-				for (int i = 0; i < allNetsinDC.Rows.Count; i++)
-				{
-					//Console.WriteLine("Makes it here 1");
-					ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
-					//Console.WriteLine("Makes it here 2");
-					toAdd["NetworkID"] = networkID;
-					//Console.WriteLine("Makes it here 3");
-					toAdd["Percent"] = NetworkOnePercent();
-					//Console.WriteLine("Makes it here 4");
-					toAdd["Farms"] = CalculatePercentByFarms();
-					//Console.WriteLine("Makes it here 5");
-
-					retTable.Rows.Add(toAdd);
-					toAdd = retTable.NewRow();
-				}
+				tags = Tags(pipeline);
 				ChangePipeline("Overview");
+			}
+			String successTag = tags[0];
+			String failureTag = tags[1];
+
+			for (int i = 0; i < allNetsinDC.Rows.Count; i++)
+			{
+				ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
+				toAdd["NetworkID"] = networkID;
+				toAdd["Percent"] = NetworkOnePercent(successTag, failureTag);
+				toAdd["Farms"] = CalculatePercentByFarms(successTag, failureTag);
+
+				retTable.Rows.Add(toAdd);
+				toAdd = retTable.NewRow();
 			}
 
 			ChangeNetworkID(-1);
@@ -311,6 +296,11 @@ namespace MvcApplication1.Models
 		}
 
 
+		/// <summary>
+		/// Retrieves the tags for a given component
+		/// </summary>
+		/// <param name="component">Component to get tags</param>
+		/// <returns>String array with SuccessTag as index 0 and FailureTag as index 1</returns>
 		private String[] Tags(String component)
 		{
 			String query = "SELECT SuccessTag, FailureTag FROM Component WHERE Component = '" + component + "'";
@@ -325,18 +315,19 @@ namespace MvcApplication1.Models
 		}
 
 
-
-		private DataTable CalculatePercentByFarms()
+		/// <summary>
+		/// Helper method for DCHM. calculates all percents for all farms in a network
+		/// </summary>
+		/// <param name="successTag">Success Tag</param>
+		/// <param name="failureTag">Failure Taf</param>
+		/// <returns>DataTable with </returns>
+		private DataTable CalculatePercentByFarms(String successTag, String failureTag)
 		{
-			String[] tags = Tags(pipeline);
-			String successTag = tags[0];
-			String failureTag = tags[1];
-
-			String query = "SELECT FarmId, CAST(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END) AS DECIMAL)" +
+			String query = "SELECT FarmId AS Farms, CAST(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END) AS DECIMAL)" +
 				"/(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END)+SUM(CASE when Tag = '" + failureTag + "' then Hits else 0 END ) + .000000001) * 100" +
 				" AS Percentage FROM Prod_Reliability";
 			String where = " WHERE Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "' AND NetworkId = " + networkID;
-			String groupBy = " GROUP BY Date, FarmId";
+			String groupBy = " GROUP BY FarmId";
 
 			query = query + where + groupBy;
 
@@ -350,12 +341,8 @@ namespace MvcApplication1.Models
 
 
 
-		private decimal NetworkOnePercent()
+		private decimal NetworkOnePercent(String successTag, String failureTag)
 		{
-			String[] tags = Tags(pipeline);
-			String successTag = tags[0];
-			String failureTag = tags[1];
-
 			String query = "SELECT CAST(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END) AS DECIMAL)" +
 				"/(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END)+SUM(CASE when Tag = '" + failureTag + "' then Hits else 0 END ) + .000000001) * 100" +
 				" AS Percentage FROM Prod_Reliability";
@@ -369,6 +356,7 @@ namespace MvcApplication1.Models
 			DataTable onePer = new DataTable();
 			onePer.Load(queryCommandReader);
 
+			if (onePer.Rows.Count == 0) return 0;
 			return (decimal)onePer.Rows[0][0];
 		}
 
