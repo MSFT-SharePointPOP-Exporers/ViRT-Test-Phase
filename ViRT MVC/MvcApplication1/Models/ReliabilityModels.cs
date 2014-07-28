@@ -19,6 +19,9 @@ namespace MvcApplication1.Models
 		private SqlConnection dbConnect = new SqlConnection(ConfigurationManager.ConnectionStrings["ViRTConnection"].ConnectionString);
 		Random random = new Random();
 
+
+		/*Constructors*/
+
 		/// <summary>
 		/// Creates a new Reliability object with default values
 		/// Every DC, Overview, and timespan of 7 days
@@ -54,6 +57,10 @@ namespace MvcApplication1.Models
 			start = pStart;
 			end = pEnd;
 		}
+
+
+		/*Public Methods*/
+
 
 		/// <summary>
 		/// Calculates the reliability percentage for a single pipeline in the overview bar
@@ -93,7 +100,7 @@ namespace MvcApplication1.Models
 					//Iterate through temp and add the values
 					for (int j = 0; j < temp.Rows.Count; j++)
 					{
-						total = total + (decimal)temp.Rows[j]["Percent"];
+						total = total + (decimal)temp.Rows[j]["Percentage"];
 					}
 
 					total = total / temp.Rows.Count;
@@ -141,77 +148,7 @@ namespace MvcApplication1.Models
 			String failureTag = (String)twoTags.Rows[0][col.ColumnName];
 
 			//Fill DataTables with the hits for that tag
-			DataTable successTable = TagHitTable(successTag);
-			DataTable failureTable = TagHitTable(failureTag);
-
-			//Since the dates are formatted weird in the DB, the dates need to be adjusted
-			DataTable formatSuccessTable = new DataTable();
-			formatSuccessTable.Columns.Add("Date", typeof(DateTime));
-			formatSuccessTable.Columns.Add("Tag", typeof(int));
-
-			DataTable formatFailureTable = new DataTable();
-			formatFailureTable.Columns.Add("Date", typeof(DateTime));
-			formatFailureTable.Columns.Add("Tag", typeof(int));
-
-			DataRow toAdd = formatSuccessTable.NewRow();
-
-			//Creating adjusted tables with dates which can be easily worked with
-			for (int i = 0; i < successTable.Rows.Count; i++)
-			{
-				int time = (int)successTable.Rows[i]["Hour"];
-				toAdd["Date"] = ((DateTime)successTable.Rows[i]["Date"]).AddHours(time);
-				toAdd["Tag"] = successTable.Rows[i]["NumberOfHits"];
-				formatSuccessTable.Rows.Add(toAdd);
-				toAdd = formatSuccessTable.NewRow();
-			}
-
-			toAdd = formatFailureTable.NewRow();
-			for (int i = 0; i < failureTable.Rows.Count; i++)
-			{
-				int time = (int)failureTable.Rows[i]["Hour"];
-				toAdd["Date"] = ((DateTime)failureTable.Rows[i]["Date"]).AddHours(time);
-				toAdd["Tag"] = failureTable.Rows[i]["NumberOfHits"];
-				formatFailureTable.Rows.Add(toAdd);
-				toAdd = formatFailureTable.NewRow();
-			}
-
-			//Create the DataTable which will be returned
-			//Columns are Date, SuccessTagHits, FailureTagHits
-			DataTable dt = new DataTable();
-			dt.Columns.Add("Date", typeof(DateTime));
-			dt.Columns.Add(successTag, typeof(int));
-			dt.Columns.Add(failureTag, typeof(int));
-			toAdd = dt.NewRow();
-
-			//Iterate through the entire timespan given in the object
-			for (DateTime i = start; i < end; i = i.AddHours(1))
-			{
-				toAdd["Date"] = i;
-
-				//Iterate through the successTable and add any entries which are present
-				for (int j = 0; j < formatSuccessTable.Rows.Count; j++)
-				{
-					if ((DateTime)formatSuccessTable.Rows[j]["Date"] == i)
-					{
-						toAdd[successTag] = formatSuccessTable.Rows[j]["Tag"];
-						j = formatSuccessTable.Rows.Count;
-					}
-				}
-
-				//Iterate through the failureTable and add any entries which are present
-				for (int j = 0; j < formatFailureTable.Rows.Count; j++)
-				{
-					if ((DateTime)formatFailureTable.Rows[j]["Date"] == i)
-					{
-						toAdd[failureTag] = formatFailureTable.Rows[j]["Tag"];
-						j = formatFailureTable.Rows.Count;
-					}
-				}
-
-				//Add the row and continue
-				dt.Rows.Add(toAdd);
-				toAdd = dt.NewRow();
-			}
+			DataTable dt = ComponentRawHitsDataTable(successTag, failureTag);
 
 			//Close and return the DataTable
 			dbConnect.Close();
@@ -288,7 +225,6 @@ namespace MvcApplication1.Models
 			return dt;
 		}
 
-
 		/// <summary>
 		/// Calculates the percentage shown on the world map circles
 		/// </summary>
@@ -314,80 +250,126 @@ namespace MvcApplication1.Models
 		/// <returns>DataTable containing a Date Column, Percent Column, and a DataTable with Farms and their Percents</returns>
 		public DataTable CalculateDataCenterHeatMap()
 		{
+			dbConnect.Open();
 			//Create a DataTable which has NetworkIDs, Percents (average of farms), and a DataTable of the Farms
 			DataTable retTable = new DataTable();
 			retTable.Columns.Add("NetworkID", typeof(int));
-			retTable.Columns.Add("Percent", typeof(decimal)); //potenial error
+			retTable.Columns.Add("Percent", typeof(decimal));
 			retTable.Columns.Add("Farms", typeof(DataTable));
 
 			//DataRow to add to the return table
-			DataRow toAddToRetTable = retTable.NewRow();
+			DataRow toAdd = retTable.NewRow();
 
 			//All the NetworkIds in the current DataCenter
-			DataTable allNetsinDC = getNetworks(dataCenter);
+			DataTable allNetsinDC = GetNetworks(dataCenter);
 
-			//Iterate through all the Networks in the current DataCenter
-			for (int rowNum = 0; rowNum < allNetsinDC.Rows.Count; rowNum++)
+
+			if (pipeline != "Overview")
 			{
-				//farmPercents holds the list of farms for a network and the percents
-				DataTable farmPercents = new DataTable();
-				farmPercents.Columns.Add("Farms", typeof(int));
-				farmPercents.Columns.Add("Percent", typeof(decimal));
 
-				ChangeNetworkID((int)allNetsinDC.Rows[rowNum]["NetworkID"]);
-
-				//Retrieve all the farms in the network
-				int[] farms = GetAllFarmsInNetworkArray();
-
-				//iterate through the farms
-				for (int i = 0; i < farms.Length; i++)
+				for (int i = 0; i < allNetsinDC.Rows.Count; i++)
 				{
-					DataRow toAdd = farmPercents.NewRow();
+					//Console.WriteLine("Makes it here 1");
+					ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
+					//Console.WriteLine("Makes it here 2");
+					toAdd["NetworkID"] = networkID;
+					//Console.WriteLine("Makes it here 3");
+					toAdd["Percent"] = NetworkOnePercent();
+					//Console.WriteLine("Makes it here 4");
+					toAdd["Farms"] = CalculatePercentByFarms();
+					//Console.WriteLine("Makes it here 5");
 
-					ChangeFarmID(farms[i]);
-
-					//temp is the table which will be added to the retTable
-					DataTable temp = CalculateOverviewBar(pipeline);
-
-					decimal per = 0;
-					toAdd["Farms"] = farms[i];
-					for (int k = 0; k < temp.Rows.Count; k++)
-					{
-						per = per + (decimal)temp.Rows[k]["Percent"];
-					}
-					toAdd["Percent"] = Math.Round(per / temp.Rows.Count, 4);
-
-					farmPercents.Rows.Add(toAdd);
+					retTable.Rows.Add(toAdd);
+					toAdd = retTable.NewRow();
 				}
-
-				//addstuff here
-				decimal perRet = 0;
-
-				for (int i = 0; i < farmPercents.Rows.Count; i++)
+			}
+			else
+			{
+				ChangePipeline("UserLogin");
+				for (int i = 0; i < allNetsinDC.Rows.Count; i++)
 				{
-					perRet = perRet + (decimal)farmPercents.Rows[i]["Percent"];
+					//Console.WriteLine("Makes it here 1");
+					ChangeNetworkID((int)allNetsinDC.Rows[i][0]);
+					//Console.WriteLine("Makes it here 2");
+					toAdd["NetworkID"] = networkID;
+					//Console.WriteLine("Makes it here 3");
+					toAdd["Percent"] = NetworkOnePercent();
+					//Console.WriteLine("Makes it here 4");
+					toAdd["Farms"] = CalculatePercentByFarms();
+					//Console.WriteLine("Makes it here 5");
+
+					retTable.Rows.Add(toAdd);
+					toAdd = retTable.NewRow();
 				}
-
-				toAddToRetTable["NetworkID"] = allNetsinDC.Rows[rowNum]["NetworkID"];
-
-				if (perRet == 0) toAddToRetTable["Percent"] = 0;
-				else toAddToRetTable["Percent"] = Math.Round(perRet / farmPercents.Rows.Count, 4);
-
-				//farmPercents.Rows.Add(toAdd);
-
-				if (farmPercents.Rows.Count != 0)
-				{
-					toAddToRetTable["Farms"] = farmPercents;
-					retTable.Rows.Add(toAddToRetTable);
-				}
-
-				toAddToRetTable = retTable.NewRow();
-
+				ChangePipeline("Overview");
 			}
 
-			//Change the object back to any farm and every farm
-			ChangeNetworkIDFarmID(-1, -1);
+			ChangeNetworkID(-1);
+			dbConnect.Close();
 			return retTable;
+
+		}
+
+
+		private String[] Tags(String component)
+		{
+			String query = "SELECT SuccessTag, FailureTag FROM Component WHERE Component = '" + component + "'";
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable twoTags = new DataTable();
+			twoTags.Load(queryCommandReader);
+
+			String[] tags = { (String)twoTags.Rows[0][0], (String)twoTags.Rows[0][1] };
+
+			return tags;
+		}
+
+
+
+		private DataTable CalculatePercentByFarms()
+		{
+			String[] tags = Tags(pipeline);
+			String successTag = tags[0];
+			String failureTag = tags[1];
+
+			String query = "SELECT FarmId, CAST(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END) AS DECIMAL)" +
+				"/(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END)+SUM(CASE when Tag = '" + failureTag + "' then Hits else 0 END ) + .000000001) * 100" +
+				" AS Percentage FROM Prod_Reliability";
+			String where = " WHERE Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "' AND NetworkId = " + networkID;
+			String groupBy = " GROUP BY Date, FarmId";
+
+			query = query + where + groupBy;
+
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable farmPercent = new DataTable();
+			farmPercent.Load(queryCommandReader);
+
+			return farmPercent;
+		}
+
+
+
+		private decimal NetworkOnePercent()
+		{
+			String[] tags = Tags(pipeline);
+			String successTag = tags[0];
+			String failureTag = tags[1];
+
+			String query = "SELECT CAST(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END) AS DECIMAL)" +
+				"/(SUM(CASE when Tag = '" + successTag + "' then Hits else 0 END)+SUM(CASE when Tag = '" + failureTag + "' then Hits else 0 END ) + .000000001) * 100" +
+				" AS Percentage FROM Prod_Reliability";
+			String where = " WHERE Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "' AND NetworkId = " + networkID;
+			String groupBy = " GROUP BY NetworkId";
+
+			query = query + where + groupBy;
+
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable onePer = new DataTable();
+			onePer.Load(queryCommandReader);
+
+			return (decimal)onePer.Rows[0][0];
 		}
 
 
@@ -402,87 +384,43 @@ namespace MvcApplication1.Models
 		/// <returns></returns>
 		private DataTable CalculateComponent(String pComponent)
 		{
-			//get success and fail tags
-			String query = "SELECT SuccessTag, FailureTag FROM Component WHERE Component = '" + pComponent + "'";
-			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
-			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			String[] tags = Tags(pComponent);
+			String successTag = tags[0];
+			String failureTag = tags[1];
 
-			//Get success and failure tags into a table
-			DataTable twoTags = new DataTable();
-			twoTags.Load(queryCommandReader);
-
-			//Pick out the two tags and convert 
-			DataColumn col = twoTags.Columns[0];
-			String successTag = (String)twoTags.Rows[0][col.ColumnName];
-			col = twoTags.Columns[1];
-			String failureTag = (String)twoTags.Rows[0][col.ColumnName];
-
-			//DataTable which have date, hour and hits
-			DataTable successTable = TagHitTable(successTag);
-			DataTable failureTable = TagHitTable(failureTag);
-
-			//return calculated table that has dates and percentages
-			return CalculatePercent(successTable, failureTable);
+			return ComponentPercentageCalculate(successTag, failureTag);
 		}
 
-		/*
-		 * Retrieves the Date, Hour, and Number of Hits for a single Tag
-		 * 
-		 * @param pTag		Tag to get info
-		 * @param connect	The connection to DB
-		 * @return		Table with all the entries for that tag
-		 */
-		private DataTable TagHitTable(String pTag)
+		/// <summary>
+		/// Calculates the reliability of a component through its tags
+		/// </summary>
+		/// <param name="sTag">Success Tag of component</param>
+		/// <param name="fTag">Failure Tag of component</param>
+		/// <returns>DataTable with Date Column and Percentage Column</returns>
+		private DataTable ComponentPercentageCalculate(String sTag, String fTag)
 		{
 			//Strings that create the query
-			String query = "SELECT Date, Hour, NumberOfHits FROM ProdDollar_TagAggregationCopy";
-			String where = " WHERE Tag = '" + pTag + "' AND Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "'";
+			String query = "SELECT DATEADD(HOUR, Hour, Date) AS Date, CAST(SUM(CASE when Tag = '" + sTag + "' then Hits else 0 END) AS DECIMAL)" +
+				"/(SUM(CASE when Tag = '" + sTag + "' then Hits else 0 END)+SUM(CASE when Tag = '" + fTag + "' then Hits else 0 END ) + .000000001) * 100" +
+				" AS Percentage FROM Prod_Reliability";
+			String where = " WHERE Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "'";
+			String groupBy = " GROUP BY Date, Hour ORDER BY Date";
+
 			//Creates the remainer of the where portion of the query
 			if (!dataCenter.Equals("All"))
 			{
-
-				if (networkID == -1 && farmID == -1)
+				if (networkID == -1) where = where + " AND DataCenter = '" + dataCenter + "'";
+				else
 				{
-					String getNetID = "Select NetworkID FROM DataCenterNetworkID WHERE DataCenter = '" + dataCenter + "'";
-					SqlCommand qCom = new SqlCommand(getNetID, dbConnect);
-					SqlDataReader qComRead = qCom.ExecuteReader();
-					DataTable netIDTable = new DataTable();
-					netIDTable.Load(qComRead);
-					if (netIDTable.Rows.Count != 0)
-					{
-						where = where + " AND ( ";
-						for (int i = 0; i < netIDTable.Rows.Count; i++)
-						{
-							where = where + "NetworkID = " + (int)netIDTable.Rows[i]["NetworkID"];
-							if ((i + 1) < netIDTable.Rows.Count)
-							{
-								where = where + " OR ";
-							}
-						}
-						where = where + " )";
-					}
-					else
-					{
-						//prevents the error from occuring
-						where = where + " AND Hour = -1";
-					}
-				}
-				else if (networkID != -1 && farmID == -1)
-				{
-					where = where + " AND NetworkID = " + networkID;
-				}
-				else if (networkID != -1 && farmID != -1)
-				{
-					where += " AND NetworkID = " + networkID + " AND FarmID = " + farmID;
+					if (farmID == -1) where = where + " AND NetworkId = '" + networkID + "'";
+					else where = where + " AND FarmId = '" + farmID + "'";
 				}
 			}
 
-			//concatenate the where to the original query
-			query = query + where;
+			//Query DB
+			query = query + where + groupBy;
 			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
 			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
-
-			//Put query into a DataTable
 			DataTable tagTable = new DataTable();
 			tagTable.Load(queryCommandReader);
 
@@ -490,79 +428,39 @@ namespace MvcApplication1.Models
 			return tagTable;
 		}
 
-		/*
-		 * Calculates the success percentage for every time where a component has both
-		 * success and failure tags
-		 * 
-		 * Need to work on the feature where if one of the tags is missing, the percent is missing
-		 * 
-		 * @param sTable		Success table
-		 * @param fTable		Failure table
-		 * @return		Data and Time table
-		 */
-		private DataTable CalculatePercent(DataTable sTable, DataTable fTable)
+		private DataTable ComponentRawHitsDataTable(String sTag, String fTag)
 		{
-			int length = sTable.Rows.Count;
+			//Strings that create the query
+			String query = "SELECT DATEADD(HOUR, Hour, Date) AS Date, SUM(CASE when Tag = '" + sTag + "' then Hits else 0 END) AS " + sTag +
+				", SUM(CASE when Tag = '" + fTag + "' then Hits else 0 END ) AS " + fTag + " FROM Prod_Reliability";
+			String where = " WHERE Date >= '" + start.ToString() + "' AND Date < '" + end.ToString() + "'";
+			String groupBy = " GROUP BY Date, Hour ORDER BY Date";
 
-			DataTable datePercent = new DataTable();
-
-			datePercent.Columns.Add("Date", typeof(DateTime));
-			datePercent.Columns.Add("Percent", typeof(decimal));
-
-			DataRow toAdd = datePercent.NewRow();
-			int succHits = 0;
-			int failHits = 0;
-			decimal per;
-			DateTime tempDate;
-
-			for (DateTime i = start; i < end; i = i.AddHours(1))
+			//Creates the remainer of the where portion of the query
+			if (!dataCenter.Equals("All"))
 			{
-
-				toAdd["Date"] = i;
-
-				//Iterate through the successTable and add any entries which are present
-				for (int j = 0; j < sTable.Rows.Count; j++)
-				{
-					tempDate = (DateTime)sTable.Rows[j]["Date"];
-					tempDate = tempDate.AddHours((int)sTable.Rows[j]["Hour"]);
-					if (tempDate == i)
-					{
-						succHits = (int)sTable.Rows[j]["NumberOfHits"];
-						j = sTable.Rows.Count;
-					}
-				}
-
-				//Iterate through the failureTable and add any entries which are present
-				for (int j = 0; j < fTable.Rows.Count; j++)
-				{
-					tempDate = (DateTime)fTable.Rows[j]["Date"];
-					tempDate = tempDate.AddHours((int)fTable.Rows[j]["Hour"]);
-					if (tempDate == i)
-					{
-						failHits = (int)fTable.Rows[j]["NumberOfHits"];
-						j = fTable.Rows.Count;
-					}
-				}
-
-				if (succHits != 0 || failHits != 0)
-				{
-					per = ((decimal)succHits / (succHits + failHits)) * 100;
-					toAdd["Percent"] = Math.Round(per, 4);
-				}
+				if (networkID == -1) where = where + " AND DataCenter = '" + dataCenter + "'";
 				else
 				{
-					toAdd["Percent"] = 0;
+					if (farmID == -1) where = where + " AND NetworkId = '" + networkID + "'";
+					else where = where + " AND FarmId = '" + farmID + "'";
 				}
-
-				//Add the row and continue
-				datePercent.Rows.Add(toAdd);
-				toAdd = datePercent.NewRow();
-				succHits = 0;
-				failHits = 0;
 			}
 
-			return datePercent;
+			//Query DB
+			query = query + where + groupBy;
+			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
+			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
+			DataTable tagTable = new DataTable();
+			tagTable.Load(queryCommandReader);
+
+			//Return the table
+			return tagTable;
 		}
+
+
+
+
 
 
 
@@ -574,7 +472,7 @@ namespace MvcApplication1.Models
 		 * @param pPipeline		The pipeline whose components will be returned
 		 * @return		Array of componets for the pipeline
 		 */
-		public String[] getComponents(String pPipeline)
+		public String[] GetComponents(String pPipeline)
 		{
 			dbConnect.Open();
 			String query = "SELECT Component FROM PipelineComponent WHERE Pipeline = '" + pPipeline + "'";
@@ -687,15 +585,13 @@ namespace MvcApplication1.Models
 		 * 
 		 * @return a DataTable of the NetworkID's
 		 */
-		public DataTable getNetworks(String dataCenter)
+		public DataTable GetNetworks(String dataCenter)
 		{
-			dbConnect.Open();
 			String query = "SELECT DISTINCT NetworkID FROM DataCenterNetworkId WHERE DataCenter = '" + dataCenter + "'";
 			SqlCommand queryCommand = new SqlCommand(query, dbConnect);
 			SqlDataReader queryCommandReader = queryCommand.ExecuteReader();
 			DataTable networks = new DataTable();
 			networks.Load(queryCommandReader);
-			dbConnect.Close();
 			return networks;
 		}
 
