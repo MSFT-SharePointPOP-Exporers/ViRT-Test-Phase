@@ -8,15 +8,17 @@
                 $("#loading").fadeIn();
             });
 
-            if (window.location.search != "") {
-                $("#rendering h1").append($.QueryString("datacen"));
+            if (window.location.search == "") {
+                updateQueryString();
+            } else  {
+                $("#rendering h1").text(sessionStorage["datacen"]);
                 $("#loading").fadeIn();
                 $.ajax({
                     data: sessionStorage["query"],
                     url: '<%= Url.Action("getNetworkFarm", "ViRT_Query") %>',
                     dataType: "json",
                     success: function (data) {
-                        $(".dchm").append('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">');
+                       $(".dchm").append('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">');
                         if (data != null) {
                             for (var x = 0; x < data.length; x++) {
                                 $(".dchm ul").append("<li id ='" + x + "'>");
@@ -40,7 +42,7 @@
                         }
                     },
                     complete: function (data) {
-                        //$("#loading").fadeOut("slow");
+                        $("#loading").fadeOut("slow");
                     }
                 });
             }

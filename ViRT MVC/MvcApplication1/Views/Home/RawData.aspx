@@ -70,7 +70,7 @@
                 	}
                 	setFields();
                 }
-            });
+        	});
 
         });
     </script>

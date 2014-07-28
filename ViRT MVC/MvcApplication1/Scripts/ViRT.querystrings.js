@@ -15,11 +15,9 @@ function setDefaults() {
     for datacenter, network, and farm are set to default values.   
 */
 function setHomeDefaults() {
-    if (window.location.search != "") {
         sessionStorage["datacen"] = "All";
         sessionStorage["network"] = -1;
         sessionStorage["farm"] = -1;
-    }
 }
 
 /*
@@ -28,9 +26,6 @@ function setHomeDefaults() {
     Finally, set the window.location.search to the querystring.
 */
 function updateQueryString() {
-	if (sessionStorage["start"] == undefined) {
-		setDefaults();
-	}
 	sessionStorage["query"] = "?start=" + sessionStorage["start"] + "&end=" + sessionStorage["end"] + "&pipeline=" + sessionStorage["pipeline"] + "&datacen=" + sessionStorage["datacen"] + "&network=" + sessionStorage["network"] + "&farm=" + sessionStorage["farm"];
 	window.location.search = sessionStorage["query"];
 }
@@ -40,12 +35,15 @@ function updateQueryString() {
     So, this makes sure that the sessionStorage variables are the same as the querystring.
 */
 function setSessionStorage() {
-	sessionStorage["start"] = $.QueryString("start");
-	sessionStorage["end"] = $.QueryString("end");
-	sessionStorage["pipeline"] = $.QueryString("pipeline");
-	sessionStorage["datacen"] = $.QueryString("datacen");
-	sessionStorage["network"] = $.QueryString("network");
-	sessionStorage["farm"] = $.QueryString("farm");
+    if (window.location.search != "") {
+        sessionStorage["start"] = $.QueryString("start");
+        sessionStorage["end"] = $.QueryString("end");
+        sessionStorage["pipeline"] = $.QueryString("pipeline");
+        sessionStorage["datacen"] = $.QueryString("datacen");
+        sessionStorage["network"] = $.QueryString("network");
+        sessionStorage["farm"] = $.QueryString("farm");
+        sessionStorage["changed"] = true;
+    }
 }
 
 /*
@@ -76,7 +74,8 @@ function setSelectedPipeline() {
 */
 function setPipeline(id) {
     $("#loading").fadeIn();
-	sessionStorage["pipeline"] = id;
+    sessionStorage["pipeline"] = id;
+    sessionStorage["changed"] = true;
 	updateQueryString();
 }
 
@@ -88,9 +87,10 @@ function setPipeline(id) {
     then it navigates the user to the Data Center Heat Map.
 */
 function setDatacenter(id) {
-	sessionStorage["datacen"] = id;
-	window.location.href = "DCHM";
-
+    sessionStorage["datacen"] = id;
+    sessionStorage["changed"] = true;
+    updateQueryString();
+	window.location.href = "../Home/DCHM";
 }
 
 /*
@@ -98,7 +98,7 @@ function setDatacenter(id) {
 */
 function setBreadcrumbs() {
     if (sessionStorage["datacen"] != "All") {
-        $(".breadcrumbs").append("<li><a href = '../Home/'>Home</a></li>");
+        $(".breadcrumbs").append("<li onclick='setHomeDefaults();'><a href = '../Home/'>Home</a></li>");
         $(".breadcrumbs").append("<li><a href = '../RePD/'>MSR Report</a></li>");
     } else  if (sessionStorage["datacen"] == "All") {
         $(".breadcrumbs").append("<li class='current'>Home</li>");
@@ -115,7 +115,8 @@ function setBreadcrumbs() {
 function setFarm(id) {
 	sessionStorage["farm"] = id;
 	sessionStorage["network"] = $("#" + id).parent().attr('id');
-	window.location.href = "PercentData";
+	sessionStorage["changed"] = true;
+	window.location.href = "../Home/PercentData";
 }
 
 /*
@@ -125,6 +126,7 @@ function setFarm(id) {
 function setNetwork(id) {
 	sessionStorage["network"] = id;
 	sessionStorage["farm"] = -1;
+	sessionStorage["changed"] = true;
 	window.location.href = "PercentData";
 }
 
@@ -135,14 +137,15 @@ function setNetwork(id) {
 */
 $(document).ready(function () {
     //$("#loading").fadeIn();
-	$(document).foundation();
-	if (window.location.search == "") {
-		updateQueryString();
-	} else {
-		setSessionStorage();
+    $(document).foundation();
+    if (sessionStorage["changed"] == false || sessionStorage["query"] == undefined) {
+        setDefaults();
+    } else if (sessionStorage["changed"] == "true" && window.location.search == "") {
+        updateQueryString();
+    }
+        setSessionStorage();
 		setFields();
 		setBreadcrumbs();
-	}
 	//$("#loading").fadeOut("slow");
 });
 

@@ -66,7 +66,7 @@ World Heat Map
 					unlistedAreasAlpha: 0.1,
 				};
 				map.imagesSettings = {
-					alpha: 0.6
+				    alpha: 0.6,
 				}
 
 				var dataProvider = {
@@ -81,7 +81,7 @@ World Heat Map
 					var id = dataItem.code;
 					var des = "Reliability of Data Center: "
 					des = des.concat(val);
-					des = des.concat("</br></br><a href='../Home/DCHM' id='" + dataItem.code.substring(0,3) + "' onclick='setDatacenter(this.id)'>Detailed Data Center View</a>");
+					des = des.concat("</br></br><a href='#' id='" + dataItem.code.substring(0,3) + "' onclick='setDatacenter(this.id)'>Detailed Data Center View</a>");
 
 					dataProvider.images.push({
 						label: id,
@@ -91,11 +91,13 @@ World Heat Map
 						type: "circle",
 						width: 27,
 						height: 27,
-					    labelFontSize: 10,
+						labelFontSize: 10,
 						color: dataItem.color,
 						longitude: latlong[id].longitude,
 						latitude: latlong[id].latitude,
+					    centered:true,
 						description: des,
+						mouseEnabled: true,
 						title: id
 					});
 				}

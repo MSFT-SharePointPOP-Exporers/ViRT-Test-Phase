@@ -103,7 +103,7 @@
         background-color: #0F0F0F;
         height: 100%;
         padding: 0;
-        padding-top: 60px;
+        /* padding-top: 60px; */
         float: left;
         margin: 0;
         -moz-box-shadow:    inset 0 0 10px #000000;
@@ -112,8 +112,9 @@
     }
 
     #pipelines ul {
-        padding:0;
-        background-color:#1E1E1E;
+        padding-top: 60px;
+        padding-bottom:0px;
+        background-color: #0F0F0F;
     }
 
     /* Overview Bar */
@@ -135,12 +136,18 @@
     .overview_component {
         float:left;
         overflow:hidden;
-        margin-bottom: 15%;
+        color:#e1e1e1;
+        line-height: 2em;
     }
 
     .overview_percent {
         float:right;
-        margin-bottom: 15%;
+        color:#e1e1e1;
+        line-height: 2em;
+    }
+
+    table tr.even, table tr.alt, table tr:nth-of-type(even) {
+        background:none;
     }
 
     /* Rendering: The right side of the dashboard*/
@@ -200,6 +207,10 @@
     #small_dates label{
         color:#e4e4e4;
         font-family:"Segoe WP",Verdana,Helvetica,sans-serif;
+    }
+
+    .ui-datepicker, .ui-datepicker-title select,.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+        font-size: 0.875rem !important;
     }
 
     /* Charts and Graphs */

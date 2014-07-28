@@ -15,7 +15,8 @@
     <%: Scripts.Render("~/bundles/modernizr") %>
       <script type="text/javascript">
           $(document).ready(function () {
-              
+              var arr = [];
+
               $(document).ajaxSend(function () {
                   $("#loading").fadeIn();                                     
               });
@@ -42,13 +43,16 @@
                   url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
+                      arr = [];
                       for (var x = 0; x < data.length; x++) {
                           if (data[x].Component.indexOf(sessionStorage["pipeline"]) > -1 && sessionStorage["pipeline"] != "Overview") {
-                              $("#overviewbar h1").append(data[x].Component + "<br><a href='../Home/PercentData'>" + data[x].Percent + "%</a>");
+                              arr.push(data[x].Component + "<br><a href='../Home/PercentData'>" + data[x].Percent + "%</a>");
                           }
                       }
                       if (sessionStorage["pipeline"] == "Overview") {
-                        $("#overviewbar h1").append("Overview");
+                          $("#overviewbar h1").html("Overview");
+                      } else {
+                          $("#overviewbar h1").html(arr.join(''));
                       }
                    }
               });
@@ -58,26 +62,32 @@
                   url: '<%= Url.Action("getOverview", "ViRT_Query") %>',
                   dataType: "json",
                   success: function (data) {
+                      arr = [];
                       for (var x = 0; x < data.length; x++) {
-                          $("tbody").append("<tr>");
-                          $("tbody").append("<td class='overview_component'>" + data[x].Component + "</td>");
-                          $("tbody").append("<td class='overview_percent'>" + data[x].Percent + "%</td>");
-                          $("tbody").append("</tr>");
+                          arr.push("<tr>");
+                          arr.push("<td class='overview_component'>" + data[x].Component + "</td>");
+                          arr.push("<td class='overview_percent'>" + data[x].Percent + "%</td>");
+                          arr.push("</tr>");
                       }
+                      $("tbody").html(arr.join(''));
                   }
               });
 
 
               $(".button").click(function () {
-                  if ($(".from").val() != sessionStorage["start"] || $(".to").val() != sessionStorage["end"]) {
-                      $("#loading").fadeIn();
-                      sessionStorage["start"] = $(".from").val();
-                      sessionStorage["end"] = $(".to").val();
-                      updateQueryString();
+                  if (Date.parse($(".from").val()) != null && Date.parse($(".to").val()) != null) {
+                      if ($(".from").val() != sessionStorage["start"] || $(".to").val() != sessionStorage["end"]) {
+                          $("#loading").fadeIn();
+                          sessionStorage["start"] = $(".from").val();
+                          sessionStorage["end"] = $(".to").val();
+                          updateQueryString();
+                      }
                   } else {
-                      alert("Please change the dates before applying date filters.");
+                      alert("The format of the dates in the date filters is not correct. (Format: YYYY-MM-DD)");
+
                   }
               });
+
               $("#FeaturedContent_Datacenter").change(function () {
                   sessionStorage["datacen"] = $("#FeaturedContent_Datacenter").val().toString();
                   updateQueryString();
@@ -90,7 +100,6 @@
                   sessionStorage["farm"] = $("#FeaturedContent_Farm").val();
                   updateQueryString();
               });
-              
           });
       </script>
     <asp:ContentPlaceHolder ID="Head" runat="server" />

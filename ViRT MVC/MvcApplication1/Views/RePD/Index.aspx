@@ -37,13 +37,17 @@
                     url: '<%= Url.Action("getReliability", "RePD_Query") %>',
                     success: function (data) {
                         reliability_val = parseFloat(data);
-                        $(".reliability").append(reliability_val.toFixed(2) + "%");
-                        if (reliability_val > upper) {
-                            $(".reliability").addClass("green");
-                        } else if (reliability_val > lower && reliability_val < upper) {
-                            $(".reliability").addClass("yellow");
-                        } else if (reliability_val < lower) {
-                            $(".reliability").addClass("red");
+                        if (reliability_val != 0) {
+                            $(".reliability").append(reliability_val.toFixed(2) + "%");
+                            if (reliability_val > upper) {
+                                $(".reliability").addClass("green");
+                            } else if (reliability_val > lower && reliability_val < upper) {
+                                $(".reliability").addClass("yellow");
+                            } else if (reliability_val < lower) {
+                                $(".reliability").addClass("red");
+                            }
+                        } else {
+                            $(".reliability").append("N/A");
                         }
                     }
                 });
@@ -53,17 +57,22 @@
                     url: '<%= Url.Action("getPerformance", "RePD_Query") %>',
                     success: function (data) {
                         performance_val = parseFloat(data);
-                        $(".performance").append(performance_val.toFixed(2) + "%");
-                        if (performance_val > upper) {
-                            $(".performance").addClass("green");
-                        } else if (performance_val > lower && performance_val < upper) {
-                            $(".performance").addClass("yellow");
-                        } else if (performance_val < lower) {
-                            $(".performance").addClass("red");
+                        if (performance_val != 0) {
+                            $(".performance").append(performance_val.toFixed(2) + "%");
+                            if (performance_val > upper) {
+                                $(".performance").addClass("green");
+                            } else if (performance_val > lower && performance_val < upper) {
+                                $(".performance").addClass("yellow");
+                            } else if (performance_val < lower) {
+                                $(".performance").addClass("red");
+                            }
+                        } else {
+                            $(".performance").append("N/A");
                         }
                     }
                 });
 
+            //Still needs to be done!
                 $.ajax({
                     data: "month=" + sessionStorage["month"],
                     url: '<%= Url.Action("getQoS", "RePD_Query") %>',
@@ -84,15 +93,19 @@
               data: "month=" + sessionStorage["month"],
               url: '<%= Url.Action("getLatency", "RePD_Query") %>',
               success: function (data) {
-                    latency = parseInt(data);
-                    $(".latency").append(latency + " ms");
-                    if (latency > upper) {
-                    $(".latency").addClass("green");
-                   } else if (latency > lower && latency < upper) {
-                        $(".latency").addClass("yellow");
+                  latency = parseInt(data);
+                  if (latency != 0) {
+                      $(".latency").append(latency + " ms");
+                      if (latency > upper) {
+                          $(".latency").addClass("green");
+                      } else if (latency > lower && latency < upper) {
+                          $(".latency").addClass("yellow");
                       } else if (latency < lower) {
-                        $(".latency").addClass("red");
-                    }
+                          $(".latency").addClass("red");
+                      }
+                  } else {
+                      $(".latency").append("N/A");
+                  }
                }
             });
         });

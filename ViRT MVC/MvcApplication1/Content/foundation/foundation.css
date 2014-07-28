@@ -3057,7 +3057,9 @@ ul.pagination {
       display: block;
       color: #008cba;
       margin: 0;
-      padding: 0.4375rem 0.875rem; }
+      padding: 0.4375rem 0.5rem; 
+      font-size: 78%;
+}
       .side-nav li a:not(.button):hover, .side-nav li a:not(.button):focus {
         background: rgba(0, 0, 0, 0.025);
         color: #1cc7ff; }
