@@ -30,7 +30,7 @@
     		});
 
     		$(document).ajaxComplete(function () {
-    			$("#loading").fadeOut("slow");
+    		    $("#loading").fadeOut("slow");                                                 
     		});
 
     		$.ajax({

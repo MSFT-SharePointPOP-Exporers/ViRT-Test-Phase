@@ -4,6 +4,36 @@
     PercentData
 </asp:Content>
 
+<asp:Content ID="Content5" ContentPlaceHolderID="Head" runat="server">
+    <style>
+        .amChartsLegend g text {
+            text-decoration: underline;
+        }
+
+        #chartdiv {
+            width: 100%;
+            height: 700px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        rect {
+            text-decoration: none;
+        }
+
+        #RawDataLink {
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/dark.js"></script>
+</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div id="chartdiv"></div>
     <script>
@@ -149,34 +179,4 @@
             </div>
         </form>
     </div>
-</asp:Content>
-
-<asp:Content ID="Content5" ContentPlaceHolderID="Head" runat="server">
-    <style>
-        .amChartsLegend g text {
-            text-decoration: underline;
-        }
-
-        #chartdiv {
-            width: 100%;
-            height: 700px;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-
-        rect {
-            text-decoration: none;
-        }
-
-        #RawDataLink {
-            padding: 0;
-        }
-    </style>
-    <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
-    <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/dark.js"></script>
 </asp:Content>
